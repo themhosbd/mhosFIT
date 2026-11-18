@@ -1,1586 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#1F4B3F">
-  <title>mhosFIT - Get your image form-ready</title>
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="apple-touch-icon" href="assets/favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600&display=swap"
-    rel="stylesheet">
-  <style>
-    :root {
-      --paper: #F5F4EE;
-      --paper-raised: #FFFFFF;
-      --ink: #1E2A22;
-      --forest: #1F4B3F;
-      --forest-dark: #153429;
-      --brick: #B33A3A;
-      --sand: #DCD6C6;
-      --muted: #6E6A5E;
-      --safe-b: env(safe-area-inset-bottom, 0px);
-    }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      max-width: 100%;
-      overflow-x: hidden;
-    }
-
-    body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-      touch-action: pan-y;
-    }
-
-    .lang-toggle {
-      position: fixed;
-      right: 18px;
-      bottom: calc(18px + var(--safe-b));
-      z-index: 30;
-      padding: 10px 16px;
-      border: 1px solid var(--forest);
-      border-radius: 999px;
-      background: var(--forest);
-      color: #fff;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      box-shadow: 0 8px 22px rgba(31, 75, 63, 0.18);
-      cursor: pointer;
-    }
-
-    .lang-toggle:hover {
-      background: var(--forest-dark);
-    }
-
-    .lang-toggle:focus-visible {
-      outline: 2px solid var(--forest);
-      outline-offset: 3px;
-    }
-
-    .video-help {
-      position: fixed;
-      right: 18px;
-      bottom: calc(72px + var(--safe-b));
-      z-index: 30;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 10px 15px;
-      border: 1px solid var(--brick);
-      border-radius: 999px;
-      background: var(--brick);
-      color: #fff;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      text-decoration: none;
-      box-shadow: 0 8px 22px rgba(179, 58, 58, 0.2);
-      animation: video-pulse 2.2s ease-in-out infinite;
-    }
-
-    .video-help svg {
-      width: 15px;
-      height: 15px;
-      fill: currentColor;
-    }
-
-    .video-help:hover {
-      background: #8F2D2D;
-      color: #fff;
-      animation-play-state: paused;
-    }
-
-    .video-help:focus-visible {
-      outline: 2px solid var(--brick);
-      outline-offset: 3px;
-    }
-
-    @keyframes video-pulse {
-      0%, 100% {
-        transform: translateY(0);
-        box-shadow: 0 8px 22px rgba(179, 58, 58, 0.2);
-      }
-      50% {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 28px rgba(179, 58, 58, 0.32);
-      }
-    }
-
-    .wrap {
-      width: 100%;
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 0 18px;
-    }
-
-    /* header */
-    header {
-      padding: 20px 0 20px;
-      border-bottom: 1px solid var(--sand);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-    }
-
-    .brand img {
-      display: block;
-      width: min(100%, 251px);
-      height: auto;
-      max-height: 60px;
-      object-fit: contain;
-      object-position: left center;
-    }
-
-    header p.tag {
-      margin: 14px 0 0;
-      color: var(--muted);
-      font-size: 14.5px;
-      max-width: 480px;
-      line-height: 1.5;
-    }
-
-    /* hero / intro */
-    .intro {
-      padding: 26px 0 6px;
-      opacity: 0;
-      transform: translateY(10px);
-      animation: rise .5s ease forwards .05s;
-    }
-
-    @keyframes rise {
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    .intro h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: clamp(23px, 5vw, 34px);
-      line-height: 1.18;
-      margin: 0 0 8px;
-      letter-spacing: -0.01em;
-    }
-
-    .intro p {
-      color: var(--muted);
-      font-size: 14.5px;
-      line-height: 1.6;
-      max-width: 560px;
-      margin: 0;
-    }
-
-    /* tabs */
-    .tabs {
-      display: flex;
-      gap: 4px;
-      margin: 22px 0 20px;
-      border-bottom: 1px solid var(--sand);
-      overflow-x: auto;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    .tabs::-webkit-scrollbar {
-      display: none;
-    }
-
-    .tab {
-      appearance: none;
-      border: none;
-      background: none;
-      cursor: pointer;
-      flex-shrink: 0;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 14.5px;
-      font-weight: 600;
-      color: var(--muted);
-      padding: 12px 6px;
-      margin-right: 20px;
-      position: relative;
-      min-height: 44px;
-    }
-
-    .tab .spec {
-      font-family: 'IBM Plex Mono', monospace;
-      font-weight: 500;
-      font-size: 11px;
-      color: var(--muted);
-      display: block;
-      margin-top: 2px;
-      white-space: nowrap;
-    }
-
-    .tab.active {
-      color: var(--ink);
-    }
-
-    .tab.active::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 20px;
-      bottom: -1px;
-      height: 2px;
-      background: var(--forest);
-    }
-
-    .tab:focus-visible {
-      outline: 2px solid var(--forest);
-      outline-offset: 3px;
-    }
-
-    /* tool grid */
-    .tool {
-      display: none;
-    }
-
-    .tool.active {
-      display: block;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-      gap: 20px;
-      align-items: start;
-      padding-bottom: 48px;
-    }
-
-    @media (max-width:760px) {
-      .grid {
-        grid-template-columns: 1fr;
-        padding-bottom: 96px;
-      }
-    }
-
-    .panel {
-      background: var(--paper-raised);
-      border: 1px solid var(--sand);
-      border-radius: 10px;
-      padding: 18px;
-      min-width: 0;
-    }
-
-    /* custom dimension settings */
-    .dim-settings {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    @media (max-width:420px) {
-      .dim-settings {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .dim-settings .field:last-child {
-        grid-column: 1/-1;
-      }
-    }
-
-    .field label {
-      display: block;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10.5px;
-      color: var(--muted);
-      margin-bottom: 6px;
-      letter-spacing: .02em;
-    }
-
-    .field input[type=number] {
-      width: 100%;
-      padding: 11px 10px;
-      border: 1px solid var(--sand);
-      border-radius: 7px;
-      font-size: 15px;
-      font-family: 'IBM Plex Mono', monospace;
-      color: var(--ink);
-      background: var(--paper);
-    }
-
-    .field input[type=number]:focus {
-      outline: 2px solid var(--forest);
-      outline-offset: 1px;
-    }
-
-    .field input:disabled {
-      opacity: .55;
-    }
-
-    .dim-hint {
-      font-size: 12px;
-      color: var(--muted);
-      margin: -6px 0 16px;
-      line-height: 1.5;
-    }
-
-    /* dropzone / cropper */
-    .stage {
-      position: relative;
-      width: 100%;
-      background: repeating-conic-gradient(#EDEBE1 0% 25%, #F5F4EE 0% 50%) 50%/16px 16px;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--sand);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .dropzone {
-      width: 100%;
-      aspect-ratio: 1/1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      cursor: pointer;
-      background: transparent;
-      border: 2px dashed var(--sand);
-      border-radius: 8px;
-      color: var(--muted);
-      text-align: center;
-      padding: 20px;
-      min-height: 180px;
-    }
-
-    .dropzone.drag-over {
-      border-color: var(--forest);
-      color: var(--forest);
-    }
-
-    .dropzone svg {
-      width: 32px;
-      height: 32px;
-      opacity: .7;
-    }
-
-    .dropzone .primary-link {
-      color: var(--forest);
-      font-weight: 600;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    .frame {
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      aspect-ratio: 1/1;
-      max-height: 70vh;
-    }
-
-    .frame img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform-origin: 0 0;
-      will-change: transform;
-      pointer-events: none;
-    }
-
-    .frame-guide {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      border: 1px solid rgba(255, 255, 255, .55);
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    /* remove button row */
-    .remove-row {
-      display: flex;
-      justify-content: center;
-      margin-top: 14px;
-    }
-
-    /* control rows: [icon-btn] [slider] [icon-btn] */
-    .controls {
-      margin-top: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .ctrl-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .icon-btn {
-      width: 40px;
-      height: 40px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      border: 1px solid var(--sand);
-      background: var(--paper);
-      color: var(--forest);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background .15s ease, border-color .15s ease;
-      -webkit-user-select: none;
-      user-select: none;
-    }
-
-    .icon-btn svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    .icon-btn:hover:not(:disabled) {
-      background: #EAF1EC;
-      border-color: var(--forest);
-    }
-
-    .icon-btn:active:not(:disabled) {
-      background: #DDEAE2;
-    }
-
-    .icon-btn:disabled {
-      opacity: .4;
-      cursor: not-allowed;
-    }
-
-    .icon-btn:focus-visible {
-      outline: 2px solid var(--forest);
-      outline-offset: 2px;
-    }
-
-    input[type=range] {
-      flex: 1;
-      accent-color: var(--forest);
-      height: 28px;
-      background: transparent;
-    }
-
-    input[type=range]:disabled {
-      opacity: .4;
-    }
-
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 18px;
-      flex-wrap: wrap;
-    }
-
-    button.btn {
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
-      font-weight: 600;
-      padding: 13px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: background .15s ease, border-color .15s ease;
-      min-height: 46px;
-    }
-
-    .btn-primary {
-      background: var(--forest);
-      color: #fff;
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      background: var(--forest-dark);
-    }
-
-    .btn-primary:disabled {
-      background: #B7C4BC;
-      cursor: not-allowed;
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--ink);
-      border-color: var(--sand);
-    }
-
-    .btn-ghost:hover:not(:disabled) {
-      border-color: var(--muted);
-    }
-
-    .btn-ghost:disabled {
-      color: #B9B6AA;
-      border-color: var(--sand);
-      cursor: not-allowed;
-    }
-
-    input[type=file] {
-      display: none;
-    }
-
-    .btn-row .btn {
-      flex: 1;
-    }
-
-    /* spec panel */
-    .spec-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 15px;
-      margin: 0 0 14px;
-    }
-
-    .spec-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 11px;
-    }
-
-    .spec-list li {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13.5px;
-      padding-bottom: 11px;
-      border-bottom: 1px solid var(--sand);
-    }
-
-    .spec-list li:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .spec-list span:first-child {
-      color: var(--muted);
-    }
-
-    .spec-list span:last-child {
-      font-family: 'IBM Plex Mono', monospace;
-      font-weight: 500;
-    }
-
-    .status {
-      margin-top: 18px;
-      padding: 12px 14px;
-      border-radius: 7px;
-      font-size: 13px;
-      line-height: 1.5;
-      background: #EEF3F0;
-      color: var(--forest-dark);
-      border: 1px solid #D4E3DB;
-    }
-
-    .status.err {
-      background: #F7EBEB;
-      color: var(--brick);
-      border-color: #EAD1D1;
-    }
-
-    .status.idle {
-      background: transparent;
-      border: 1px dashed var(--sand);
-      color: var(--muted);
-    }
-
-    .note {
-      margin-top: 16px;
-      font-size: 12.5px;
-      color: var(--muted);
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    footer {
-      border-top: 1px solid var(--sand);
-      padding: 22px 0 32px;
-      margin-top: 6px;
-    }
-
-    footer p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 12px;
-      overflow-wrap: anywhere;
-    }
-
-    canvas {
-      display: none;
-    }
-
-    /* mobile: sticky action bar for the active tool */
-    @media (max-width:760px) {
-      .video-help {
-        right: 14px;
-        bottom: calc(136px + var(--safe-b));
-      }
-
-      .lang-toggle {
-        right: 14px;
-        bottom: calc(82px + var(--safe-b));
-      }
-
-      header {
-        padding: 18px 0 16px;
-      }
-
-      .wrap {
-        padding-left: 14px;
-        padding-right: 14px;
-      }
-
-      .brand img {
-        width: min(100%, 210px);
-        max-height: 50px;
-      }
-
-      header p.tag {
-        margin-top: 11px;
-        font-size: 13.5px;
-      }
-
-      .grid {
-        gap: 14px;
-      }
-
-      .panel {
-        padding: 14px;
-      }
-
-      .tabs {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0;
-        overflow: hidden;
-      }
-
-      .tab {
-        min-width: 0;
-        margin-right: 0;
-        padding-left: 3px;
-        padding-right: 3px;
-        font-size: 13.5px;
-        line-height: 1.2;
-        overflow-wrap: anywhere;
-      }
-
-      .tab .spec {
-        font-size: 9.5px;
-        line-height: 1.3;
-        white-space: normal;
-      }
-
-      .tab.active::after {
-        right: 0;
-      }
-
-      .spec-list li {
-        gap: 12px;
-        align-items: flex-start;
-      }
-
-      .spec-list span:last-child {
-        text-align: right;
-        overflow-wrap: anywhere;
-      }
-
-      .tool.active .panel:first-child {
-        position: relative;
-      }
-
-      .tool.active .btn-row {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 20;
-        margin: 0;
-        padding: 12px 18px calc(12px + var(--safe-b));
-        background: var(--paper-raised);
-        border-top: 1px solid var(--sand);
-        box-shadow: 0 -6px 16px rgba(20, 30, 24, 0.06);
-      }
-    }
-
-    @media (max-width:380px) {
-      .brand img {
-        width: min(100%, 180px);
-      }
-
-      .tabs {
-        margin-top: 18px;
-      }
-
-      .tab {
-        padding-left: 2px;
-        padding-right: 2px;
-        font-size: 13px;
-      }
-
-      .tab .spec {
-        font-size: 9px;
-      }
-
-      .ctrl-row {
-        gap: 6px;
-      }
-
-      .icon-btn {
-        width: 36px;
-        height: 36px;
-      }
-
-      .btn-row {
-        gap: 8px;
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-      }
-
-      button.btn {
-        padding-left: 12px;
-        padding-right: 12px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F5F4EE">
+<title>mhosFIT – Passport, Stamp Photo &amp; Signature Resizer</title>
+<meta name="description" content="Free mhosFIT tool to crop, rotate and compress passport size, stamp size and 300×300 photos plus signatures to exact pixels and KB for any form. Private, works on mobile.">
+<meta name="keywords" content="mhosFIT, mhos fit, passport size photo resize, stamp size photo, 300x300 photo 100KB, signature 300x80 60KB, photo compressor, form photo size, পাসপোর্ট সাইজ ছবি, স্ট্যাম্প সাইজ ছবি, স্বাক্ষর সাইজ">
+<meta name="author" content="mhosFIT">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://mhosfit.github.io/">
+<link rel="alternate" hreflang="en" href="https://mhosfit.github.io/">
+<link rel="alternate" hreflang="bn" href="https://mhosfit.github.io/">
+<link rel="alternate" hreflang="x-default" href="https://mhosfit.github.io/">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="mhosFIT">
+<meta property="og:title" content="mhosFIT – Passport, Stamp Photo &amp; Signature Resizer">
+<meta property="og:description" content="Resize passport size, stamp size and 300×300 photos and signatures to the exact pixels and KB. Free and private.">
+<meta property="og:url" content="https://mhosfit.github.io/">
+<meta property="og:image" content="https://mhosfit.github.io/assets/og.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="bn_BD">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="mhosFIT – Passport, Stamp Photo &amp; Signature Resizer">
+<meta name="twitter:description" content="Passport size, stamp size, 300×300 photo and signature resizer. Free, private, mobile friendly.">
+<meta name="twitter:image" content="https://mhosfit.github.io/assets/og.png">
+<!-- <meta name="google-site-verification" content="PASTE_CODE_HERE"> -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://mhosfit.github.io/#site", "name": "mhosFIT", "alternateName": ["mhos fit", "mhosfit"], "url": "https://mhosfit.github.io/", "inLanguage": ["en", "bn"]}, {"@type": "WebApplication", "name": "mhosFIT", "url": "https://mhosfit.github.io/", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any (browser-based)", "browserRequirements": "Requires JavaScript", "description": "Free online passport size photo, stamp size photo and signature resizer and compressor.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "inLanguage": ["en", "bn"], "isPartOf": {"@id": "https://mhosfit.github.io/#site"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is mhosFIT?", "acceptedAnswer": {"@type": "Answer", "text": "mhosFIT is a free browser tool that crops, rotates, resizes and compresses your photo or signature to the exact pixel size and file size that an online form asks for."}}, {"@type": "Question", "name": "What is passport size photo in pixels?", "acceptedAnswer": {"@type": "Answer", "text": "A standard passport size photo is 35 x 45 mm, which is 413 x 531 pixels at 300 DPI. Pick Passport size in mhosFIT, fit your face in the frame and download a JPG."}}, {"@type": "Question", "name": "What is stamp size photo in pixels?", "acceptedAnswer": {"@type": "Answer", "text": "A stamp size photo is usually 20 x 25 mm, which is 236 x 295 pixels at 300 DPI. Pick Stamp size in mhosFIT and download a ready JPG."}}, {"@type": "Question", "name": "How do I make a photo 300x300 pixels under 100KB?", "acceptedAnswer": {"@type": "Answer", "text": "Open the Photo tab, add your picture, position and zoom it inside the square frame, then tap Download. mhosFIT outputs a 300x300 JPG and compresses it automatically to stay under 100KB."}}, {"@type": "Question", "name": "How do I make a signature 300x80 pixels under 60KB?", "acceptedAnswer": {"@type": "Answer", "text": "Open the Signature tab, add a photo of your signature on white paper, fit it in the frame and tap Download. The result is a 300x80 JPG under 60KB."}}, {"@type": "Question", "name": "My form asks for a different size or KB limit. What should I do?", "acceptedAnswer": {"@type": "Answer", "text": "Use the Custom tab. Enter any width, height and maximum file size, then crop, rotate a full 360 degrees and download."}}, {"@type": "Question", "name": "Are my images uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything runs locally in your browser, so your photo and signature never leave your device."}}]}]}
+</script>
+<style>
+:root{--paper:#F5F4EE;--raised:#FFFFFF;--ink:#1E2A22;--forest:#1F4B3F;--forest-d:#153429;--brick:#B33A3A;--sand:#DCD6C6;--muted:#6E6A5E;--tint:#EAF1EC;--sh:0 1px 2px rgba(30,42,34,.05),0 12px 28px -16px rgba(31,75,63,.25);--sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html,body{margin:0;max-width:100%;overflow-x:hidden}
+body{background:var(--paper);color:var(--ink);font:400 16px/1.6 Inter,"Hind Siliguri",system-ui,-apple-system,"Noto Sans Bengali","Kohinoor Bangla",Vrinda,sans-serif;-webkit-font-smoothing:antialiased;min-height:100dvh;padding-top:var(--st)}
+h1,h2,h3,.tab b,.btn,.pill{font-family:"Space Grotesk","Anek Bangla","Hind Siliguri",Inter,"Hind Siliguri",sans-serif}
+.wrap{width:100%;max-width:1060px;margin:0 auto;padding:0 16px}
+a{color:var(--forest)}
+:focus-visible{outline:2px solid var(--forest);outline-offset:3px}
+.hidden{display:none!important}
+
+header{padding:12px 0 0}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand img{display:block;height:38px;width:auto;max-width:46vw;object-fit:contain}
+.acts{display:flex;gap:8px}
+.pill{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:6px 14px;border-radius:999px;border:1px solid var(--sand);background:var(--raised);color:var(--ink);font-size:13.5px;font-weight:600;text-decoration:none;cursor:pointer}
+.pill svg{width:13px;height:13px;fill:currentColor}
+.pill.go{background:var(--brick);border-color:var(--brick);color:#fff}
+.pill.go:hover{background:#8F2D2D}
+
+.intro{padding:26px 0 0}
+h1{font-size:clamp(26px,6.8vw,44px);line-height:1.1;margin:0 0 12px;letter-spacing:-.025em;color:var(--forest);font-weight:700;max-width:760px}
+.intro p{color:var(--muted);font-size:15.5px;max-width:600px;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:16px 0 0;padding:0}
+.chips li{padding:5px 12px;border-radius:999px;background:var(--tint);color:var(--forest);font-size:13px;font-weight:600}
+
+/* size menu: every item shows the real aspect ratio of its output */
+.menu{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;margin:22px -16px 16px;padding:4px 16px 10px;scrollbar-width:none}
+.menu::-webkit-scrollbar{display:none}
+.tab{flex:none;scroll-snap-align:center;display:flex;align-items:center;gap:11px;min-height:58px;padding:9px 16px 9px 13px;border:1px solid var(--sand);border-radius:16px;background:var(--raised);color:var(--ink);text-align:left;cursor:pointer;box-shadow:var(--sh);transition:background .2s,color .2s,border-color .2s}
+.tab b{display:block;font-size:14.5px;font-weight:600;line-height:1.2}
+.tab small{display:block;margin-top:2px;font:500 11.5px/1.3 Inter,"Hind Siliguri",sans-serif;color:var(--muted)}
+.shape{flex:none;display:block;border:2px solid var(--forest);border-radius:3px;background:var(--tint)}
+.tab[aria-selected=true]{background:var(--forest);border-color:var(--forest);color:#fff}
+.tab[aria-selected=true] small{color:#cfe0d8}
+.tab[aria-selected=true] .shape{border-color:#fff;background:rgba(255,255,255,.2)}
+
+.tool{display:none}.tool.active{display:block}
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;padding-bottom:calc(110px + var(--sb))}
+.panel{background:var(--raised);border:1px solid var(--sand);border-radius:20px;padding:16px;min-width:0;box-shadow:var(--sh)}
+.step{display:flex;align-items:center;gap:10px;margin:0 0 12px;font:600 14.5px/1.2 "Space Grotesk","Anek Bangla","Hind Siliguri",sans-serif;color:var(--forest);grid-column:1/-1}
+.step i{width:24px;height:24px;border-radius:50%;background:var(--forest);color:#fff;display:grid;place-items:center;font-style:normal;font-size:12.5px}
+.dims{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.field label{display:block;font-size:11.5px;font-weight:600;color:var(--muted);margin-bottom:5px}
+.field input{width:100%;min-height:48px;padding:8px 12px;border:1px solid var(--sand);border-radius:12px;background:var(--paper);color:var(--ink);font:600 16px Inter,"Hind Siliguri",sans-serif}
+.field input:focus{outline:2px solid var(--forest);outline-offset:1px;background:#fff}
+.field input:disabled{opacity:.5}
+.hint{font-size:12.5px;color:var(--muted);margin:0 0 16px}
+.stage{display:flex;justify-content:center;border-radius:14px;overflow:hidden;background:repeating-conic-gradient(#ECE9DD 0 25%,#F7F6F1 0 50%) 50%/16px 16px}
+.dropzone{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:190px;padding:20px;text-align:center;color:var(--muted);border:2px dashed #C9C3B0;border-radius:14px;background:var(--paper);cursor:pointer;font-size:15px;transition:border-color .2s,background .2s}
+.dropzone:hover,.dropzone.over{border-color:var(--forest);background:var(--tint);color:var(--forest)}
+.dropzone svg{width:56px;height:56px;padding:15px;border-radius:50%;background:var(--tint);color:var(--forest)}
+.dropzone b{color:var(--forest);text-decoration:underline;text-underline-offset:3px}
+.frame{position:relative;overflow:hidden;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.frame.drag{cursor:grabbing}
+.frame img{position:absolute;top:0;left:0;transform-origin:0 0;pointer-events:none;max-width:none}
+.frame::after{content:"";position:absolute;inset:0;pointer-events:none;border:2px solid var(--forest);box-shadow:inset 0 0 0 1px rgba(255,255,255,.8)}
+.remove{display:flex;justify-content:center;margin-top:12px}
+.controls{margin-top:18px;display:flex;flex-direction:column;gap:6px}
+.row{display:flex;align-items:center;gap:8px}
+.ib{width:42px;height:42px;flex:none;display:grid;place-items:center;border:1px solid var(--sand);border-radius:12px;background:var(--raised);color:var(--forest);cursor:pointer;transition:background .15s,color .15s}
+.ib svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ib:hover{background:var(--tint)}
+.ib:active{background:var(--forest);border-color:var(--forest);color:#fff}
+input[type=range]{flex:1;min-width:0;height:36px;accent-color:var(--forest);background:transparent}
+.deg{flex:none;min-width:44px;text-align:right;font-size:12.5px;font-weight:600;color:var(--forest);font-variant-numeric:tabular-nums}
+.btns{display:flex;gap:10px}
+.btn{flex:1;min-height:52px;padding:12px 16px;border-radius:14px;border:1px solid var(--sand);background:var(--raised);color:var(--ink);font-size:16px;font-weight:600;cursor:pointer;transition:background .15s,transform .15s}
+.btn:active:not(:disabled){transform:scale(.98)}
+.btn.p{flex:1.6;background:var(--forest);border-color:var(--forest);color:#fff}
+.btn.p:hover:not(:disabled){background:var(--forest-d)}
+.btn.rm{flex:none;min-height:42px;padding:6px 18px;font-size:14px;color:var(--brick);border-color:#E7C9C9;background:#FBF3F3}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input[type=file]{display:none}
+.tool .btns{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 16px calc(10px + var(--sb));background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);border-top:1px solid var(--sand)}
+.panel h2{font-size:16px;margin:0 0 4px;color:var(--forest)}
+.spec{list-style:none;margin:0;padding:0}
+.spec li{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--sand);font-size:14px}
+.spec li:last-child{border:0}.spec span:first-child{color:var(--muted)}.spec span:last-child{font-weight:600;text-align:right}
+.status{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:13.5px;background:var(--tint);color:var(--forest-d)}
+.status.idle{background:transparent;border:1px dashed var(--sand);color:var(--muted)}
+.status.err{background:#F7EBEB;color:var(--brick)}
+.note{margin:14px 0 0;font-size:13px;color:var(--muted)}
+
+.seo{padding:12px 0 30px;border-top:1px solid var(--sand);margin-top:6px}
+.seo h2{font-size:clamp(21px,5vw,28px);margin:30px 0 10px;color:var(--forest);letter-spacing:-.015em}
+.seo p,.seo li{color:#4a4a42;font-size:15px;max-width:720px}
+.seo ol{padding-left:22px}.seo li::marker{color:var(--forest);font-weight:700}
+.tbl{overflow-x:auto;border:1px solid var(--sand);border-radius:16px;background:var(--raised);box-shadow:var(--sh)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--sand)}
+th{font:600 12.5px "Space Grotesk","Anek Bangla","Hind Siliguri",sans-serif;color:var(--muted);background:var(--paper)}
+tr:last-child td{border:0}td:first-child{font-weight:600;color:var(--forest)}
+details{border-bottom:1px solid var(--sand);max-width:720px}
+summary{cursor:pointer;padding:14px 0;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:50px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--tint);color:var(--forest);font-size:18px}
+details[open] summary::after{content:"–"}
+details p{margin:0 0 14px}
+footer{border-top:1px solid var(--sand);padding:20px 0 calc(116px + var(--sb));color:var(--muted);font-size:12.5px}
+footer p{margin:0 0 6px}
+
+@media(min-width:761px){
+  .wrap{padding:0 28px}
+  .brand img{height:46px}
+  .menu{flex-wrap:wrap;overflow:visible;margin:26px 0 20px;padding:0}
+  .grid{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:start;padding-bottom:44px;gap:20px}
+  .panel{padding:22px}
+  .grid>.panel+.panel{position:sticky;top:16px}
+  .controls{display:grid;grid-template-columns:1fr 1fr;gap:6px 20px}
+  .tool .btns{position:static;padding:0;margin-top:20px;background:none;border:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+  footer{padding-bottom:32px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.deg{margin-left:auto;min-width:0;padding:3px 10px;border-radius:999px;background:var(--tint);color:var(--forest);font-size:12.5px;font-weight:600}
+@media(max-width:760px){
+  .intro{padding-top:18px}
+  h1{font-size:clamp(23px,6.2vw,30px);margin-bottom:8px}
+  .intro p{font-size:14.5px}
+  .chips{margin-top:12px;gap:6px}.chips li{font-size:12.5px;padding:4px 10px}.chips li:nth-child(4){display:none}
+  .menu{margin-top:16px}
+  .dropzone{min-height:150px}
+}
+.fabs{position:fixed;right:14px;bottom:calc(88px + var(--sb));z-index:40;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.fabs .pill{min-height:44px;padding:8px 16px;box-shadow:0 10px 24px -8px rgba(30,42,34,.5)}
+.fabs .pill:not(.go){background:var(--raised);color:var(--forest)}
+.fabs svg{width:16px;height:16px}.fabs .go svg{width:13px;height:13px}
+@media(min-width:761px){.fabs{right:22px;bottom:22px}}
+#lang svg{fill:none}
+.fabs .go{width:auto}
+@media(max-width:760px){.fabs .go{width:44px;padding:0;justify-content:center}.fabs .go span{display:none}}
+body[data-l=bn] .bn-only{display:none}
+.bn-only{margin-top:6px}
+button,input{font-family:inherit}
+body[data-l=bn]{line-height:1.75}
+body[data-l=bn] h1,body[data-l=bn] h2,body[data-l=bn] h3{letter-spacing:0;line-height:1.3}
+body[data-l=bn] h1{line-height:1.28}
+body[data-l=bn] .tab b,body[data-l=bn] .btn{letter-spacing:0}
+</style>
 </head>
-
 <body>
-  <a class="video-help" id="video-help" href="https://youtu.be/cUXcqkXN83Q?si=a8pPxJ23vfGhfBsI" target="_blank"
-    rel="noopener noreferrer" aria-label="Watch the tutorial video" title="Watch the tutorial video">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M8 5.5v13l10-6.5L8 5.5z"></path>
-    </svg>
-    <span data-i18n="videoButton">Watch video</span>
-  </a>
-  <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch language" title="বাংলা / English">বাংলা</button>
-
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <img src="assets/logo.png" alt="mhosFIT">
-      </div>
-      <p class="tag" data-i18n="brandTag">Crop, resize and compress your photo, signature, or any custom-size image — done right on your
-        device, nothing uploaded anywhere.</p>
-    </header>
-
-    <div class="intro">
-      <h1 data-i18n="heroTitle">Get your image form-ready in one pass</h1>
-      <p data-i18n="heroSubtitle">Pick a tool, drop in your image, position it with the controls, and download a correctly sized JPG.</p>
-    </div>
-
-    <div class="tabs" role="tablist">
-      <button class="tab active" role="tab" aria-selected="true" data-target="photo">
-        <span data-i18n="tabPhoto">Photo</span>
-        <span class="spec" data-i18n="tabPhotoSpec">300 × 300px · 100KB</span>
-      </button>
-      <button class="tab" role="tab" aria-selected="false" data-target="signature">
-        <span data-i18n="tabSignature">Signature</span>
-        <span class="spec" data-i18n="tabSignatureSpec">300 × 80px · 60KB</span>
-      </button>
-      <button class="tab" role="tab" aria-selected="false" data-target="custom">
-        <span data-i18n="tabCustom">Custom</span>
-        <span class="spec" data-i18n="tabCustomSpec">Your size &amp; limit</span>
-      </button>
-    </div>
-
-    <!-- PHOTO TOOL -->
-    <div class="tool active" id="tool-photo" data-w="300" data-h="300" data-maxkb="100">
-      <div class="grid">
-        <div class="panel">
-          <div class="stage" data-stage>
-            <div class="dropzone" data-dropzone tabindex="0" role="button"
-              aria-label="Drop a photo here or select a file">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
-                <path d="M12 16V4m0 0L7 9m5-5l5 5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke-width="1.6" stroke-linecap="round" />
-              </svg>
-              <div data-i18n-html="photoDrop">Drag and drop a photo here<br>or <span class="primary-link">select a photo</span></div>
-            </div>
-            <div class="frame hidden" data-frame>
-              <img data-img alt="">
-              <div class="frame-guide"></div>
-            </div>
-          </div>
-          <input type="file" accept="image/*" data-fileinput>
-
-          <div class="remove-row hidden" data-removerow>
-            <button class="btn btn-primary" data-remove>Remove</button>
-          </div>
-
-          <div class="controls hidden" data-controls>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="posX:-1" aria-label="Move left" title="Move left">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="posX" min="-100" max="100" value="0" aria-label="Horizontal position">
-              <button class="icon-btn" data-nudge="posX:1" aria-label="Move right" title="Move right">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-            </div>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="posY:-1" aria-label="Move up" title="Move up">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="posY" min="-100" max="100" value="0" aria-label="Vertical position">
-              <button class="icon-btn" data-nudge="posY:1" aria-label="Move down" title="Move down">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-            </div>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="zoom:-1" aria-label="Zoom out" title="Zoom out">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.8" />
-                  <path d="M20 20l-4.35-4.35M8 10.5h5" stroke="currentColor" stroke-width="1.8"
-                    stroke-linecap="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="zoom" min="0" max="100" value="0" aria-label="Zoom">
-              <button class="icon-btn" data-nudge="zoom:1" aria-label="Zoom in" title="Zoom in">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.8" />
-                  <path d="M20 20l-4.35-4.35M10.5 8v5M8 10.5h5" stroke="currentColor" stroke-width="1.8"
-                    stroke-linecap="round" />
-                </svg>
-              </button>
-            </div>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="rotate:-1" aria-label="Rotate left" title="Rotate left">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M4 9a8 8 0 1114.9 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                  <path d="M4 4v5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="rotate" min="-45" max="45" value="0" aria-label="Rotation">
-              <button class="icon-btn" data-nudge="rotate:1" aria-label="Rotate right" title="Rotate right">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M20 9A8 8 0 105.1 13.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                  <path d="M20 4v5h-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="btn-row">
-            <button class="btn btn-ghost" data-reset data-i18n="btnReset">Reset</button>
-            <button class="btn btn-primary" data-download data-i18n="btnDownload">Download</button>
-          </div>
-        </div>
-        <div class="panel">
-          <p class="spec-title" data-i18n="specTitle">Output specification</p>
-          <ul class="spec-list">
-            <li><span data-i18n="specDimensions">Dimensions</span><span>300 × 300 px</span></li>
-            <li><span data-i18n="specAspect">Aspect</span><span>1:1</span></li>
-            <li><span data-i18n="specFormat">Format</span><span>JPG</span></li>
-            <li><span data-i18n="specMaxSize">Max file size</span><span>100 KB</span></li>
-          </ul>
-          <div class="status idle" data-status data-i18n="statusPhotoIdle">Drop or select a photo to begin.</div>
-          <p class="note" data-i18n="notePhoto">Use the arrows and sliders to position, zoom and rotate your photo inside the frame.
-            Compression is applied automatically to stay under 100KB.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- SIGNATURE TOOL -->
-    <div class="tool" id="tool-signature" data-w="300" data-h="80" data-maxkb="60">
-      <div class="grid">
-        <div class="panel">
-          <div class="stage" data-stage>
-            <div class="dropzone" data-dropzone tabindex="0" role="button"
-              aria-label="Drop a signature image here or select a file" style="aspect-ratio:3.75/1;">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
-                <path d="M12 16V4m0 0L7 9m5-5l5 5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke-width="1.6" stroke-linecap="round" />
-              </svg>
-              <div data-i18n-html="signatureDrop">Drag and drop a signature here<br>or <span class="primary-link">select an image</span></div>
-            </div>
-            <div class="frame hidden" data-frame style="aspect-ratio:3.75/1;">
-              <img data-img alt="">
-              <div class="frame-guide"></div>
-            </div>
-          </div>
-          <input type="file" accept="image/*" data-fileinput>
-
-          <div class="remove-row hidden" data-removerow>
-            <button class="btn btn-primary" data-remove>Remove</button>
-          </div>
-
-          <div class="controls hidden" data-controls>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="posX:-1" aria-label="Move left" title="Move left">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="posX" min="-100" max="100" value="0" aria-label="Horizontal position">
-              <button class="icon-btn" data-nudge="posX:1" aria-label="Move right" title="Move right">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-            </div>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="posY:-1" aria-label="Move up" title="Move up">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="posY" min="-100" max="100" value="0" aria-label="Vertical position">
-              <button class="icon-btn" data-nudge="posY:1" aria-label="Move down" title="Move down">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-            </div>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="zoom:-1" aria-label="Zoom out" title="Zoom out">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.8" />
-                  <path d="M20 20l-4.35-4.35M8 10.5h5" stroke="currentColor" stroke-width="1.8"
-                    stroke-linecap="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="zoom" min="0" max="100" value="0" aria-label="Zoom">
-              <button class="icon-btn" data-nudge="zoom:1" aria-label="Zoom in" title="Zoom in">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.8" />
-                  <path d="M20 20l-4.35-4.35M10.5 8v5M8 10.5h5" stroke="currentColor" stroke-width="1.8"
-                    stroke-linecap="round" />
-                </svg>
-              </button>
-            </div>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="rotate:-1" aria-label="Rotate left" title="Rotate left">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M4 9a8 8 0 1114.9 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                  <path d="M4 4v5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="rotate" min="-45" max="45" value="0" aria-label="Rotation">
-              <button class="icon-btn" data-nudge="rotate:1" aria-label="Rotate right" title="Rotate right">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M20 9A8 8 0 105.1 13.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                  <path d="M20 4v5h-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="btn-row">
-            <button class="btn btn-ghost" data-reset data-i18n="btnReset">Reset</button>
-            <button class="btn btn-primary" data-download data-i18n="btnDownload">Download</button>
-          </div>
-        </div>
-        <div class="panel">
-          <p class="spec-title" data-i18n="specTitle">Output specification</p>
-          <ul class="spec-list">
-            <li><span data-i18n="specDimensions">Dimensions</span><span>300 × 80 px</span></li>
-            <li><span data-i18n="specAspect">Aspect</span><span>3.75:1</span></li>
-            <li><span data-i18n="specFormat">Format</span><span>JPG</span></li>
-            <li><span data-i18n="specMaxSize">Max file size</span><span>60 KB</span></li>
-          </ul>
-          <div class="status idle" data-status data-i18n="statusSignatureIdle">Drop or select a signature image to begin.</div>
-          <p class="note" data-i18n="noteSignature">For best results, use a photo of your signature on plain white paper, good lighting, no
-            shadows.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- CUSTOM TOOL -->
-    <div class="tool" id="tool-custom" data-custom="1">
-      <div class="grid">
-        <div class="panel">
-          <div class="dim-settings">
-            <div class="field">
-            <label for="custom-w" data-i18n="labelWidth">WIDTH (PX)</label>
-              <input type="number" id="custom-w" min="10" max="4000" value="400" inputmode="numeric">
-            </div>
-            <div class="field">
-            <label for="custom-h" data-i18n="labelHeight">HEIGHT (PX)</label>
-              <input type="number" id="custom-h" min="10" max="4000" value="400" inputmode="numeric">
-            </div>
-            <div class="field">
-            <label for="custom-kb" data-i18n="labelMaxSize">MAX SIZE (KB)</label>
-              <input type="number" id="custom-kb" min="5" max="10000" value="200" inputmode="numeric">
-            </div>
-          </div>
-          <p class="dim-hint" data-dimhint data-i18n="customHint">Set the size you need, then add your image. Dimensions lock once an image is
-            loaded — remove it to change them.</p>
-
-          <div class="stage" data-stage>
-            <div class="dropzone" data-dropzone tabindex="0" role="button"
-              aria-label="Drop an image here or select a file">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
-                <path d="M12 16V4m0 0L7 9m5-5l5 5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke-width="1.6" stroke-linecap="round" />
-              </svg>
-              <div data-i18n-html="customDrop">Drag and drop an image here<br>or <span class="primary-link">select an image</span></div>
-            </div>
-            <div class="frame hidden" data-frame>
-              <img data-img alt="">
-              <div class="frame-guide"></div>
-            </div>
-          </div>
-          <input type="file" accept="image/*" data-fileinput>
-
-          <div class="remove-row hidden" data-removerow>
-            <button class="btn btn-primary" data-remove>Remove</button>
-          </div>
-
-          <div class="controls hidden" data-controls>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="posX:-1" aria-label="Move left" title="Move left">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="posX" min="-100" max="100" value="0" aria-label="Horizontal position">
-              <button class="icon-btn" data-nudge="posX:1" aria-label="Move right" title="Move right">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-            </div>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="posY:-1" aria-label="Move up" title="Move up">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="posY" min="-100" max="100" value="0" aria-label="Vertical position">
-              <button class="icon-btn" data-nudge="posY:1" aria-label="Move down" title="Move down">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-            </div>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="zoom:-1" aria-label="Zoom out" title="Zoom out">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.8" />
-                  <path d="M20 20l-4.35-4.35M8 10.5h5" stroke="currentColor" stroke-width="1.8"
-                    stroke-linecap="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="zoom" min="0" max="100" value="0" aria-label="Zoom">
-              <button class="icon-btn" data-nudge="zoom:1" aria-label="Zoom in" title="Zoom in">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.8" />
-                  <path d="M20 20l-4.35-4.35M10.5 8v5M8 10.5h5" stroke="currentColor" stroke-width="1.8"
-                    stroke-linecap="round" />
-                </svg>
-              </button>
-            </div>
-            <div class="ctrl-row">
-              <button class="icon-btn" data-nudge="rotate:-1" aria-label="Rotate left" title="Rotate left">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M4 9a8 8 0 1114.9 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                  <path d="M4 4v5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-              <input type="range" data-slider="rotate" min="-45" max="45" value="0" aria-label="Rotation">
-              <button class="icon-btn" data-nudge="rotate:1" aria-label="Rotate right" title="Rotate right">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M20 9A8 8 0 105.1 13.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                  <path d="M20 4v5h-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="btn-row">
-            <button class="btn btn-ghost" data-reset data-i18n="btnReset">Reset</button>
-            <button class="btn btn-primary" data-download data-i18n="btnDownload">Download</button>
-          </div>
-        </div>
-        <div class="panel">
-          <p class="spec-title" data-i18n="specTitle">Output specification</p>
-          <ul class="spec-list">
-            <li><span data-i18n="specDimensions">Dimensions</span><span data-spec-dim>400 × 400 px</span></li>
-            <li><span data-i18n="specAspect">Aspect</span><span data-spec-ratio>1:1</span></li>
-            <li><span data-i18n="specFormat">Format</span><span>JPG</span></li>
-            <li><span data-i18n="specMaxSize">Max file size</span><span data-spec-kb>200 KB</span></li>
-          </ul>
-          <div class="status idle" data-status data-i18n="statusCustomIdle">Set your dimensions above, then add an image.</div>
-          <p class="note" data-i18n="noteCustom">Perfect for job portals, university admissions, visa forms or any site with its own size rules
-            — just type in what they ask for.</p>
-        </div>
-      </div>
-    </div>
-
-    <footer>
-      <p data-i18n="footerText">Everything runs locally on your device — images are never uploaded to a server.
-      </p>
-    </footer>
+<div class="fabs">
+  <a class="pill go" href="https://youtu.be/cUXcqkXN83Q?si=a8pPxJ23vfGhfBsI" target="_blank" rel="noopener noreferrer" title="Watch the tutorial video" aria-label="Watch the tutorial video" data-bna="টিউটোরিয়াল ভিডিও দেখুন"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z"/></svg><span data-bn="ভিডিও দেখুন">Watch video</span></a>
+  <button class="pill" id="lang" type="button" aria-label="Switch language" data-bna="ভাষা বদলান"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg><span id="lang-label">বাংলা</span></button>
+</div>
+<div class="wrap">
+<header>
+  <div class="bar">
+    <a class="brand" href="./" aria-label="mhosFIT home" data-bna="mhosFIT হোম"><img src="assets/logo.png" alt="mhosFIT logo" width="251" height="60"></a>
   </div>
+</header>
+<main>
+<section class="intro">
+  <h1 data-bn="mhosFIT: পাসপোর্ট সাইজ, স্ট্যাম্প সাইজ ছবি ও স্বাক্ষর রিসাইজার">mhosFIT: passport size, stamp size photo and signature resizer</h1>
+  <p data-bn="ক্রপ, ৩৬০° ঘুরান, রিসাইজ ও কমপ্রেস করুন — ফর্মের চাওয়া সাইজ ও KB-তে। সবকিছু আপনার ডিভাইসেই থাকে।">Crop, rotate 360°, resize and compress to the exact pixels and KB your form asks for. Everything stays on your device.</p>
+  <ul class="chips"><li data-bn="ফ্রি">Free</li><li data-bn="আপলোড নেই">No upload</li><li data-bn="৩৬০° ঘুরান">360° rotate</li><li data-bn="মোবাইল ফ্রেন্ডলি">Mobile friendly</li></ul>
+</section>
+<div class="menu" id="menu" role="tablist" aria-label="Choose a size" data-bna="সাইজ বাছুন"></div>
+<div id="tools"></div>
 
-  <canvas data-canvas></canvas>
+<noscript><p class="status err">mhosFIT needs JavaScript to resize images in your browser. Please enable JavaScript. / ছবি রিসাইজ করতে JavaScript চালু করুন।</p></noscript>
 
-  <script>
-    (function () {
-      const tabs = document.querySelectorAll('.tab');
-      const tools = document.querySelectorAll('.tool');
-      const langToggle = document.getElementById('lang-toggle');
+<!-- SEO CONTENT -->
+<article class="seo">
+  <h2 data-bn="mhosFIT কী?">What is mhosFIT?</h2>
+  <p data-bn="mhosFIT একটি ফ্রি অনলাইন ইমেজ টুল, যা আপনার ছবি আবেদন ফর্মের জন্য প্রস্তুত করে। পাসপোর্ট সাইজ ছবি, স্ট্যাম্প সাইজ ছবি বা স্বাক্ষর ক্রপ করুন, পুরো ৩৬০° ঘুরান, রিসাইজ ও কমপ্রেস করুন — ওয়েবসাইটের চাওয়া ঠিক পিক্সেল ও KB-তে। মোবাইল, ট্যাবলেট ও ডেস্কটপে সহজে চলে, আর আপনার ফাইল ডিভাইসের বাইরে যায় না।">mhosFIT is a free online image tool that gets your pictures ready for application forms. Crop, rotate a full 360°, resize and compress a passport size photo, a stamp size photo or a signature to the exact pixel size and KB limit a website asks for. It works smoothly on mobile, tablet and desktop, and your files never leave your device.</p>
+  <h2 data-bn="ছবি ও স্বাক্ষরের সাইজ এক নজরে">Photo and signature sizes at a glance</h2>
+  <div class="tbl"><table><thead><tr><th data-bn="ধরন">Type</th><th data-bn="পিক্সেল">Pixels</th><th data-bn="প্রিন্ট সাইজ">Print size</th><th data-bn="সর্বোচ্চ ফাইল সাইজ">Max file size</th></tr></thead><tbody>
+  <tr><td data-bn="ফটো">Photo</td><td>300 × 300 px</td><td>1:1</td><td>100 KB</td></tr>
+  <tr><td data-bn="পাসপোর্ট সাইজ ছবি">Passport size photo</td><td>413 × 531 px</td><td>35 × 45 mm</td><td>200 KB</td></tr>
+  <tr><td data-bn="স্ট্যাম্প সাইজ ছবি">Stamp size photo</td><td>236 × 295 px</td><td>20 × 25 mm</td><td>50 KB</td></tr>
+  <tr><td data-bn="স্বাক্ষর">Signature</td><td>300 × 80 px</td><td>3.75:1</td><td>60 KB</td></tr>
+  <tr><td data-bn="কাস্টম">Custom</td><td data-bn="যেকোনো সাইজ">Any size</td><td data-bn="আপনার পছন্দ">Your choice</td><td data-bn="আপনার সীমা">Your limit</td></tr></tbody></table></div>
+  <h2 data-bn="ছবি বা স্বাক্ষর কীভাবে রিসাইজ করবেন">How to resize your photo or signature</h2>
+  <ol><li data-bn="&lt;strong&gt;ফটো&lt;/strong&gt;, &lt;strong&gt;পাসপোর্ট সাইজ&lt;/strong&gt;, &lt;strong&gt;স্ট্যাম্প সাইজ&lt;/strong&gt;, &lt;strong&gt;স্বাক্ষর&lt;/strong&gt; বা &lt;strong&gt;কাস্টম&lt;/strong&gt; বেছে নিন।">Choose <strong>Photo</strong>, <strong>Passport size</strong>, <strong>Stamp size</strong>, <strong>Signature</strong> or <strong>Custom</strong>.</li><li data-bn="ফোন বা কম্পিউটার থেকে ইমেজ বাছুন, অথবা টেনে আনুন।">Select an image from your phone or computer, or drag it in.</li><li data-bn="টেনে, পিঞ্চ করে জুম করে বা স্লাইডার দিয়ে সরান, জুম ও ৩৬০° ঘুরান — ফ্রেমে ঠিকমতো না বসা পর্যন্ত।">Drag, pinch to zoom, or use the sliders to move, zoom and rotate 360° until it fits the frame.</li><li data-bn="&lt;strong&gt;ডাউনলোড&lt;/strong&gt; চাপলেই ঠিক সাইজের কমপ্রেস করা JPG সেভ হবে।">Tap <strong>Download</strong> to save a correctly sized, compressed JPG.</li></ol>
+  <section class="bn-only" lang="bn"><h2>পাসপোর্ট সাইজ, স্ট্যাম্প সাইজ ছবি ও স্বাক্ষর রিসাইজ করুন mhosFIT দিয়ে</h2><p>mhosFIT একটি বিনামূল্যের অনলাইন টুল, যা দিয়ে চাকরির আবেদন, ভর্তি ও ভিসা ফর্মের জন্য পাসপোর্ট সাইজ ছবি (৩৫×৪৫ মিমি), স্ট্যাম্প সাইজ ছবি (২০×২৫ মিমি), ৩০০×৩০০ ছবি এবং স্বাক্ষর (৩০০×৮০ পিক্সেল) সহজেই ক্রপ, ঘুরানো, রিসাইজ ও কমপ্রেস করা যায়। আপনার ছবি কোনো সার্ভারে আপলোড হয় না।</p></section>
+  <h2 data-bn="সচরাচর জিজ্ঞাসা">Frequently asked questions</h2>
+  <details><summary data-bn="mhosFIT কী?">What is mhosFIT?</summary><p data-bn="mhosFIT একটি ফ্রি ব্রাউজার টুল, যা অনলাইন ফর্মের চাওয়া পিক্সেল সাইজ ও ফাইল সাইজ অনুযায়ী আপনার ছবি বা স্বাক্ষর ক্রপ, ঘুরানো, রিসাইজ ও কমপ্রেস করে।">mhosFIT is a free browser tool that crops, rotates, resizes and compresses your photo or signature to the exact pixel size and file size that an online form asks for.</p></details><details><summary data-bn="পাসপোর্ট সাইজ ছবি কত পিক্সেল?">What is passport size photo in pixels?</summary><p data-bn="স্ট্যান্ডার্ড পাসপোর্ট সাইজ ছবি ৩৫×৪৫ মিমি, যা ৩০০ DPI-তে ৪১৩×৫৩১ পিক্সেল। mhosFIT-এ পাসপোর্ট সাইজ বেছে নিন, মুখ ফ্রেমের মাঝে বসান ও JPG ডাউনলোড করুন।">A standard passport size photo is 35 x 45 mm, which is 413 x 531 pixels at 300 DPI. Pick Passport size in mhosFIT, fit your face in the frame and download a JPG.</p></details><details><summary data-bn="স্ট্যাম্প সাইজ ছবি কত পিক্সেল?">What is stamp size photo in pixels?</summary><p data-bn="স্ট্যাম্প সাইজ ছবি সাধারণত ২০×২৫ মিমি, যা ৩০০ DPI-তে ২৩৬×২৯৫ পিক্সেল। mhosFIT-এ স্ট্যাম্প সাইজ বেছে নিন ও তৈরি JPG ডাউনলোড করুন।">A stamp size photo is usually 20 x 25 mm, which is 236 x 295 pixels at 300 DPI. Pick Stamp size in mhosFIT and download a ready JPG.</p></details><details><summary data-bn="৩০০×৩০০ পিক্সেল ছবি ১০০KB-এর নিচে কীভাবে করব?">How do I make a photo 300x300 pixels under 100KB?</summary><p data-bn="ফটো ট্যাব খুলে ছবি দিন, চৌকো ফ্রেমের ভেতরে বসান ও জুম করুন, তারপর ডাউনলোড চাপুন। mhosFIT ৩০০×৩০০ JPG বানায় এবং ১০০KB-এর নিচে রাখতে নিজে কমপ্রেস করে।">Open the Photo tab, add your picture, position and zoom it inside the square frame, then tap Download. mhosFIT outputs a 300x300 JPG and compresses it automatically to stay under 100KB.</p></details><details><summary data-bn="স্বাক্ষর ৩০০×৮০ পিক্সেল ও ৬০KB-এর নিচে কীভাবে করব?">How do I make a signature 300x80 pixels under 60KB?</summary><p data-bn="স্বাক্ষর ট্যাব খুলে সাদা কাগজে স্বাক্ষরের ছবি দিন, ফ্রেমে বসিয়ে ডাউনলোড চাপুন। ফলাফল হবে ৬০KB-এর নিচের ৩০০×৮০ JPG।">Open the Signature tab, add a photo of your signature on white paper, fit it in the frame and tap Download. The result is a 300x80 JPG under 60KB.</p></details><details><summary data-bn="আমার ফর্মে অন্য সাইজ বা KB চাইলে কী করব?">My form asks for a different size or KB limit. What should I do?</summary><p data-bn="কাস্টম ট্যাব ব্যবহার করুন। যেকোনো প্রস্থ, উচ্চতা ও সর্বোচ্চ ফাইল সাইজ লিখে ক্রপ করুন, পুরো ৩৬০° ঘুরান ও ডাউনলোড করুন।">Use the Custom tab. Enter any width, height and maximum file size, then crop, rotate a full 360 degrees and download.</p></details><details><summary data-bn="আমার ছবি কি সার্ভারে আপলোড হয়?">Are my images uploaded to a server?</summary><p data-bn="না। সবকিছু আপনার ব্রাউজারেই চলে, তাই ছবি ও স্বাক্ষর কখনো আপনার ডিভাইসের বাইরে যায় না।">No. Everything runs locally in your browser, so your photo and signature never leave your device.</p></details>
+</article>
+</main>
 
-      const translations = {
-        brandTag: { en: 'Crop, resize and compress your photo, signature, or any custom-size image — done right on your device, nothing uploaded anywhere.', bn: 'আপনার ছবি, স্বাক্ষর বা কাস্টম সাইজের যেকোনো ইমেজকে ক্রপ, রিসাইজ ও কমপ্রেস করুন — সবকিছু আপনার ডিভাইসেই, কিছুই আপলোড হয় না।' },
-        heroTitle: { en: 'Get your image form-ready in one pass', bn: 'এক ক্লিকে আপনার ইমেজ ফর্মের জন্য প্রস্তুত করুন' },
-        heroSubtitle: { en: 'Pick a tool, drop in your image, position it with the controls, and download a correctly sized JPG.', bn: 'টুল বাছুন, ইমেজটি আপলোড করুন, কন্ট্রোল দিয়ে জায়গা ঠিক করুন, তারপর ঠিক সাইজের JPG ডাউনলোড করুন।' },
-        tabPhoto: { en: 'Photo', bn: 'ফটো' },
-        tabPhotoSpec: { en: '300 × 300px · 100KB', bn: '৩০০ × ৩০০px · ১০০KB' },
-        tabSignature: { en: 'Signature', bn: 'স্বাক্ষর' },
-        tabSignatureSpec: { en: '300 × 80px · 60KB', bn: '৩০০ × ৮০px · ৬০KB' },
-        tabCustom: { en: 'Custom', bn: 'কাস্টম' },
-        tabCustomSpec: { en: 'Your size & limit', bn: 'আপনার সাইজ ও সীমা' },
-        photoDrop: { en: 'Drag and drop a photo here<br>or <span class="primary-link">select a photo</span>', bn: 'ফটোটি এখানে টেনে আনুন<br>বা <span class="primary-link">ফটো বাছুন</span>' },
-        signatureDrop: { en: 'Drag and drop a signature here<br>or <span class="primary-link">select an image</span>', bn: 'স্বাক্ষরটি এখানে টেনে আনুন<br>বা <span class="primary-link">ইমেজ বাছুন</span>' },
-        customDrop: { en: 'Drag and drop an image here<br>or <span class="primary-link">select an image</span>', bn: 'ইমেজটি এখানে টেনে আনুন<br>বা <span class="primary-link">ইমেজ বাছুন</span>' },
-        btnReset: { en: 'Reset', bn: 'রিসেট' },
-        btnDownload: { en: 'Download', bn: 'ডাউনলোড' },
-        specTitle: { en: 'Output specification', bn: 'আউটপুট স্পেসিফিকেশন' },
-        specDimensions: { en: 'Dimensions', bn: 'সাইজ' },
-        specAspect: { en: 'Aspect', bn: 'অ্যাসপেক্ট' },
-        specFormat: { en: 'Format', bn: 'ফরম্যাট' },
-        specMaxSize: { en: 'Max file size', bn: 'সর্বোচ্চ ফাইল সাইজ' },
-        statusPhotoIdle: { en: 'Drop or select a photo to begin.', bn: 'শুরু করতে ফটো দিন বা বাছুন।' },
-        statusSignatureIdle: { en: 'Drop or select a signature image to begin.', bn: 'শুরু করতে স্বাক্ষরের ইমেজ দিন বা বাছুন।' },
-        statusCustomIdle: { en: 'Set your dimensions above, then add an image.', bn: 'উপরে সাইজ ঠিক করুন, তারপর ইমেজ যোগ করুন।' },
-        notePhoto: { en: 'Use the arrows and sliders to position, zoom and rotate your photo inside the frame. Compression is applied automatically to stay under 100KB.', bn: 'তীর ও স্লাইডার ব্যবহার করে ফ্রেমের ভেতরে ফটোকে বসান, জুম করুন ও ঘুরান। ১০০KB এর নিচে রাখতে কম্প্রেশন স্বয়ংক্রিয়ভাবে কাজ করে।' },
-        noteSignature: { en: 'For best results, use a photo of your signature on plain white paper, good lighting, no shadows.', bn: 'ভাল ফলাফলের জন্য সাদা কাগজে স্বাক্ষরের ছবি নিন, ভালো আলো রাখুন ও ছায়া কম রাখুন।' },
-        noteCustom: { en: 'Perfect for job portals, university admissions, visa forms or any site with its own size rules — just type in what they ask for.', bn: 'জব পোর্টাল, বিশ্ববিদ্যালয় ভর্তি, ভিসা ফর্ম বা যেকোনো সাইটের নিজস্ব সাইজের জন্য খুবই উপযোগী — শুধু যা চাইছেন তা লিখুন।' },
-        footerText: { en: 'Everything runs locally on your device — images are never uploaded to a server.', bn: 'সবকিছু আপনার ডিভাইসেই চলে — ছবিগুলো সার্ভারে আপলোড হয় না।' },
-        videoButton: { en: 'Watch video', bn: 'ভিডিও দেখুন' },
-        labelWidth: { en: 'WIDTH (PX)', bn: 'প্রস্থ (পিক্সেল)' },
-        labelHeight: { en: 'HEIGHT (PX)', bn: 'উচ্চতা (পিক্সেল)' },
-        labelMaxSize: { en: 'MAX SIZE (KB)', bn: 'সর্বোচ্চ সাইজ (KB)' },
-        customHint: { en: 'Set the size you need, then add your image. Dimensions lock once an image is loaded — remove it to change them.', bn: 'প্রয়োজনমতো সাইজ ঠিক করুন, তারপর ইমেজ যোগ করুন। ইমেজ লোড হলে সাইজ লক হয়ে যাবে — বদলাতে মুছে দিন।' }
+<footer>
+  <p data-bn="সবকিছু আপনার ডিভাইসেই চলে — ছবি সার্ভারে আপলোড হয় না।">Everything runs locally on your device. Images are never uploaded to a server.</p>
+  <p>© <span id="yr"></span> mhosFIT</p>
+</footer>
+</div>
+<canvas id="cv" class="hidden"></canvas>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  $('#yr').textContent=new Date().getFullYear();
+  var lang='en',langBtn=$('#lang'),META={};
+
+  /* language toggle (swaps text in place, status messages re-render) */
+  function applyLang(l){
+    lang=l;
+    $$('[data-bn]').forEach(function(el){
+      if(el.dataset.en===undefined)el.dataset.en=el.innerHTML;
+      el.innerHTML=l==='bn'?el.dataset.bn:el.dataset.en;
+    });
+    $$('[data-bna]').forEach(function(el){
+      if(el.dataset.ena===undefined)el.dataset.ena=el.getAttribute(el.tagName==='IMG'?'alt':'aria-label')||'';
+      var v=l==='bn'?el.dataset.bna:el.dataset.ena;
+      el.setAttribute(el.tagName==='IMG'?'alt':'aria-label',v);
+      if(el.hasAttribute('title'))el.setAttribute('title',v);
+    });
+    document.body.dataset.l=l;
+    var md=$('meta[name=description]');
+    if(!META.t){META.t=document.title;META.d=md.getAttribute('content')}
+    document.title=l==='bn'?'mhosFIT – পাসপোর্ট, স্ট্যাম্প ছবি ও স্বাক্ষর রিসাইজার':META.t;
+    md.setAttribute('content',l==='bn'?'ফর্মের জন্য পাসপোর্ট সাইজ, স্ট্যাম্প সাইজ ও ৩০০×৩০০ ছবি এবং স্বাক্ষর ঠিক পিক্সেল ও KB-তে ক্রপ, ঘুরান ও কমপ্রেস করুন। ফ্রি, প্রাইভেট, মোবাইল-বান্ধব।':META.d);
+    $('#lang-label').textContent=l==='bn'?'English':'বাংলা';document.documentElement.lang=l;
+    document.dispatchEvent(new Event('langchange'));
+  }
+  langBtn.addEventListener('click',function(){var n=lang==='bn'?'en':'bn';applyLang(n);try{localStorage.setItem('mhosfit-lang',n)}catch(e){}});
+
+  /* tools config -> menu + panels are built from this list */
+  var TOOLS=[
+   {id:'photo',w:300,h:300,kb:100,ar:'1:1',en:'Photo',bn:'ফটো',what:['photo','ফটো'],note:['Drag, pinch or use the controls to position, zoom and rotate (full 360°). Compression is automatic to stay under 100KB.','টেনে, পিঞ্চ করে বা কন্ট্রোল দিয়ে বসান, জুম করুন ও ৩৬০° ঘুরান। ১০০KB এর নিচে রাখতে কম্প্রেশন নিজে নিজেই হয়।']},
+   {id:'passport',w:413,h:531,kb:200,ar:'7:9',mm:'35 × 45 mm',en:'Passport size',bn:'পাসপোর্ট সাইজ',what:['photo','ফটো'],note:['Passport size 35×45 mm at 300 DPI. Keep your face centred on a plain light background. If your form needs another KB limit, use Custom.','পাসপোর্ট সাইজ ৩৫×৪৫ মিমি (৩০০ DPI)। মুখ মাঝখানে ও পেছনে হালকা রঙ রাখুন। ফর্মে অন্য KB চাইলে কাস্টম ব্যবহার করুন।']},
+   {id:'stamp',w:236,h:295,kb:50,ar:'4:5',mm:'20 × 25 mm',en:'Stamp size',bn:'স্ট্যাম্প সাইজ',what:['photo','ফটো'],note:['Stamp size 20×25 mm at 300 DPI. Crop close to the face so it stays clear when small. If your form needs another KB limit, use Custom.','স্ট্যাম্প সাইজ ২০×২৫ মিমি (৩০০ DPI)। ছোট সাইজেও স্পষ্ট রাখতে মুখের কাছ থেকে ক্রপ করুন। অন্য KB চাইলে কাস্টম ব্যবহার করুন।']},
+   {id:'signature',w:300,h:80,kb:60,ar:'3.75:1',en:'Signature',bn:'স্বাক্ষর',what:['signature','স্বাক্ষর'],note:['For best results, photograph your signature on plain white paper in good light with no shadows.','ভালো ফলাফলের জন্য সাদা কাগজে স্বাক্ষর করে ভালো আলোয় ছবি তুলুন, ছায়া এড়ান।']},
+   {id:'custom',w:400,h:400,kb:200,custom:1,en:'Custom',bn:'কাস্টম',sub:['Your size & limit','আপনার সাইজ ও সীমা'],what:['image','ইমেজ'],note:['Perfect for job portals, admissions, visa forms or any site with its own size rules. Just type what they ask for.','জব পোর্টাল, ভর্তি, ভিসা ফর্ম বা যেকোনো সাইটের নিজস্ব সাইজের জন্য — শুধু তাদের চাওয়া মান লিখুন।']}
+  ];
+  var IDLEMAP={};
+  TOOLS.forEach(function(t){IDLEMAP[t.id]=t.custom?['Set your size above, then add an image.','উপরে সাইজ ঠিক করুন, তারপর ইমেজ দিন।']:['Drop or select a '+t.what[0]+' to begin.','শুরু করতে '+t.what[1]+' দিন বা বাছুন।']});
+  var UP='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5l5 5M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>';
+  function toolHTML(t,first){
+    var dz='Drag and drop a '+t.what[0]+' here<br>or <b>select a '+t.what[0]+'</b>',dzb=t.what[1]+' এখানে টেনে আনুন<br>বা <b>'+t.what[1]+' বাছুন</b>';
+    var dims=t.custom?'<div class="dims"><div class="field"><label for="cw" data-bn="প্রস্থ (px)">Width (px)</label><input id="cw" type="number" min="10" max="4000" value="400" inputmode="numeric"></div><div class="field"><label for="ch" data-bn="উচ্চতা (px)">Height (px)</label><input id="ch" type="number" min="10" max="4000" value="400" inputmode="numeric"></div><div class="field"><label for="ck" data-bn="সর্বোচ্চ (KB)">Max size (KB)</label><input id="ck" type="number" min="5" max="10000" value="200" inputmode="numeric"></div></div><p class="hint" data-hint></p>':'';
+    var li=function(a,ab,b,id){return '<li><span data-bn="'+ab+'">'+a+'</span><span'+(id?' data-'+id:'')+'>'+b+'</span></li>'};
+    var spec=li('Dimensions','সাইজ',t.w+' × '+t.h+' px',t.custom?'sd':'')+(t.mm?li('Print size','প্রিন্ট সাইজ',t.mm):'')+li('Aspect','অ্যাসপেক্ট',t.custom?'1:1':t.ar,t.custom?'sr':'')+li('Format','ফরম্যাট','JPG')+li('Max file size','সর্বোচ্চ ফাইল সাইজ',t.kb+' KB',t.custom?'sk':'');
+    return '<section class="tool'+(first?' active':'')+'" id="tool-'+t.id+'" role="tabpanel" data-w="'+t.w+'" data-h="'+t.h+'" data-kb="'+t.kb+'"'+(t.custom?' data-custom':'')+' aria-label="'+t.en+' resizer" data-bna="'+t.bn+' রিসাইজার">'
+    +'<div class="grid"><div class="panel">'+dims
+    +'<p class="step"><i>1</i><span data-bn="ইমেজ যোগ করুন">Add your image</span></p>'
+    +'<div class="stage" data-stage><div class="dropzone" data-drop tabindex="0" role="button" aria-label="Select an image" data-bna="ইমেজ বাছুন">'+UP+'<div data-bn="'+dzb+'">'+dz+'</div></div><div class="frame hidden" data-frame><img data-img alt="Your image preview" data-bna="আপনার ইমেজের প্রিভিউ"></div></div>'
+    +'<input type="file" accept="image/*" data-file>'
+    +'<div class="remove hidden" data-removerow><button class="btn rm" data-remove data-bn="সরান">Remove</button></div>'
+    +'<div class="controls hidden" data-ctrls></div>'
+    +'<div class="btns"><button class="btn" data-reset disabled data-bn="রিসেট">Reset</button><button class="btn p" data-dl disabled data-bn="ডাউনলোড">Download</button></div></div>'
+    +'<div class="panel"><h2 data-bn="আউটপুট স্পেসিফিকেশন">Output specification</h2><ul class="spec">'+spec+'</ul><div class="status idle" data-status></div><p class="note" data-bn="'+t.note[1]+'">'+t.note[0]+'</p></div></div></section>';
+  }
+  var menu=$('#menu'),box=$('#tools');
+  TOOLS.forEach(function(t,i){
+    var sty=(t.w/t.h>1.4?'width:34px':'height:30px')+';aspect-ratio:'+t.w+'/'+t.h;
+    menu.insertAdjacentHTML('beforeend','<button class="tab" role="tab" type="button" aria-selected="'+(i===0)+'" aria-controls="tool-'+t.id+'" data-t="'+t.id+'"><i class="shape" style="'+sty+'"></i><span><b data-bn="'+t.bn+'">'+t.en+'</b><small'+(t.custom?' data-bn="'+t.sub[1]+'"':'')+'>'+(t.custom?t.sub[0]:t.w+'×'+t.h+' · '+t.kb+'KB')+'</small></span></button>');
+    box.insertAdjacentHTML('beforeend',toolHTML(t,i===0));
+  });
+  var tabs=$$('.tab'),tools=$$('.tool');
+  function pick(id,user){
+    if(!tools.some(function(p){return p.id==='tool-'+id}))id='photo';
+    tabs.forEach(function(x){var on=x.dataset.t===id;x.setAttribute('aria-selected',on);if(on&&user)x.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'})});
+    tools.forEach(function(p){p.classList.toggle('active',p.id==='tool-'+id)});
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){pick(t.dataset.t,true);try{history.replaceState(null,'','#'+t.dataset.t)}catch(e){}})});
+  if(location.hash)pick(location.hash.slice(1),true);
+
+  
+  /* controls markup */
+  var P={L:'<path d="M15 6l-6 6 6 6"/>',R:'<path d="M9 6l6 6-6 6"/>',U:'<path d="M6 15l6-6 6 6"/>',D:'<path d="M6 9l6 6 6-6"/>',
+    ZO:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.35-4.35M8 10.5h5"/>',
+    ZI:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.35-4.35M10.5 8v5M8 10.5h5"/>',
+    RL:'<path d="M4 9a8 8 0 1114.9 4.2"/><path d="M4 4v5h5"/>',RR:'<path d="M20 9A8 8 0 105.1 13.2"/><path d="M20 4v5h-5"/>'};
+  var ROWS=[['posX',-100,100,'L','R','Move left','Move right','বামে সরান','ডানে সরান','Horizontal position','অনুভূমিক অবস্থান'],
+            ['posY',-100,100,'U','D','Move up','Move down','উপরে সরান','নিচে সরান','Vertical position','উল্লম্ব অবস্থান'],
+            ['zoom',0,100,'ZO','ZI','Zoom out','Zoom in','জুম কমান','জুম বাড়ান','Zoom','জুম'],
+            ['rotate',-180,180,'RL','RR','Rotate left','Rotate right','বামে ঘুরান','ডানে ঘুরান','Rotation','ঘূর্ণন']];
+  function ctrlHTML(){
+    return '<p class="step"><i>2</i><span data-bn="অবস্থান ঠিক করুন">Adjust</span><span class="deg" data-deg>0°</span></p>'+ROWS.map(function(r){
+      var b=function(p,d,l,lb){return '<button type="button" class="ib" data-nudge="'+r[0]+':'+d+'" aria-label="'+l+'" title="'+l+'" data-bna="'+lb+'"><svg viewBox="0 0 24 24">'+P[p]+'</svg></button>'};
+      return '<div class="row">'+b(r[3],-1,r[5],r[7])+'<input type="range" data-slider="'+r[0]+'" min="'+r[1]+'" max="'+r[2]+'" value="0" aria-label="'+r[9]+'" data-bna="'+r[10]+'">'+b(r[4],1,r[6],r[8])+'</div>';
+    }).join('');
+  }
+
+  function init(el){
+    var custom=el.hasAttribute('data-custom');
+    var outW=+el.dataset.w,outH=+el.dataset.h,maxB=+el.dataset.kb*1024;
+    var drop=$('[data-drop]',el),frame=$('[data-frame]',el),img=$('[data-img]',el),file=$('[data-file]',el),
+        rmRow=$('[data-removerow]',el),rm=$('[data-remove]',el),ctrls=$('[data-ctrls]',el),
+        reset=$('[data-reset]',el),dl=$('[data-dl]',el),status=$('[data-status]',el),stage=$('[data-stage]',el),cv=$('#cv');
+    ctrls.innerHTML=ctrlHTML();
+    var S={posX:$('[data-slider=posX]',el),posY:$('[data-slider=posY]',el),zoom:$('[data-slider=zoom]',el),rotate:$('[data-slider=rotate]',el)},
+        degEl=$('[data-deg]',el);
+    var natW=0,natH=0,url=null,st={x:0,y:0,z:0,r:0},msg=['Drop or select a photo to begin.','শুরু করতে ফটো দিন বা বাছুন।'],msgType='idle';
+    var cw,chh,ck,hint,sd,sr,sk;
+    if(custom){cw=$('#cw');chh=$('#ch');ck=$('#ck');hint=$('[data-hint]',el);sd=$('[data-sd]',el);sr=$('[data-sr]',el);sk=$('[data-sk]',el)}
+    var HINT=['Set the size you need, then add your image. Size locks once an image is loaded; remove it to change.','প্রয়োজনমতো সাইজ ঠিক করুন, তারপর ইমেজ দিন। ইমেজ লোড হলে সাইজ লক হবে — বদলাতে "সরান" চাপুন।'];
+    var clamp=function(v,a,b){return Math.min(Math.max(v,a),b)};
+    var gcd=function(a,b){return b?gcd(b,a%b):a};
+
+    function say(en,bn,type){msg=[en,bn||en];msgType=type||'';paint()}
+    function paint(){status.textContent=msg[lang==='bn'?1:0];status.className='status'+(msgType?' '+msgType:'');
+      if(custom)hint.textContent=natW?(lang==='bn'?'সাইজ লক করা আছে। বদলাতে "সরান" চাপুন।':'Size locked. Tap Remove to change it.'):HINT[lang==='bn'?1:0]}
+    document.addEventListener('langchange',paint);
+    var IDLE=IDLEMAP;
+    var key=custom?'custom':el.id.replace('tool-','');
+    msg=IDLE[key];paint();
+
+    function aspect(){
+      var a=outW+'/'+outH,w='min(100%, calc(55dvh * '+(outW/outH)+'))';
+      frame.style.aspectRatio=drop.style.aspectRatio=a;frame.style.width=drop.style.width=w;
+      if(!custom&&outW/outH>2)drop.style.minHeight='110px';
+    }
+    function spec(){if(!custom)return;sd.textContent=outW+' × '+outH+' px';var g=gcd(outW,outH)||1;sr.textContent=(outW/g)+':'+(outH/g);sk.textContent=Math.round(maxB/1024)+' KB'}
+    aspect();spec();
+    if(custom)[cw,chh,ck].forEach(function(i){i.addEventListener('input',function(){
+      outW=clamp(parseInt(cw.value)||400,10,4000);outH=clamp(parseInt(chh.value)||400,10,4000);maxB=clamp(parseInt(ck.value)||200,5,10000)*1024;aspect();spec()})});
+
+    /* geometry: works at any angle thanks to the rotated bounding box */
+    function fs(){var r=frame.getBoundingClientRect();return{w:r.width,h:r.height}}
+    function minScale(rot,fw,fh){var a=rot*Math.PI/180,c=Math.abs(Math.cos(a)),s=Math.abs(Math.sin(a));return Math.max(fw/(natW*c+natH*s),fh/(natW*s+natH*c))}
+    function offs(rot,sc,fw,fh){var a=rot*Math.PI/180,c=Math.abs(Math.cos(a)),s=Math.abs(Math.sin(a));
+      return{x:Math.max(0,(natW*c+natH*s)*sc/2-fw/2),y:Math.max(0,(natW*s+natH*c)*sc/2-fh/2)}}
+    function geo(){var f=fs(),sc=minScale(st.r,f.w,f.h)*(1+st.z*2),o=offs(st.r,sc,f.w,f.h);return{f:f,sc:sc,o:o,px:st.x*o.x,py:st.y*o.y}}
+    function render(){
+      if(!natW)return;var g=geo();
+      img.style.transform='translate('+(g.f.w/2+g.px)+'px,'+(g.f.h/2+g.py)+'px) rotate('+st.r+'deg) scale('+g.sc+') translate('+(-natW/2)+'px,'+(-natH/2)+'px)';
+      S.posX.value=st.x*100;S.posY.value=st.y*100;S.zoom.value=st.z*100;S.rotate.value=st.r;
+      if(degEl)degEl.textContent=Math.round(st.r)+'°';
+    }
+    function wrap(d){return((d+540)%360)-180}
+
+    function load(f){
+      if(!f||f.type.indexOf('image/')!==0){say('That file is not a supported image type.','এই ফাইলটি সহায়তা করা ইমেজ টাইপ নয়।','err');return}
+      if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(f);
+      var t=new Image();
+      t.onload=function(){
+        natW=t.naturalWidth;natH=t.naturalHeight;img.src=url;
+        drop.classList.add('hidden');frame.classList.remove('hidden');rmRow.classList.remove('hidden');ctrls.classList.remove('hidden');
+        reset.disabled=dl.disabled=false;
+        if(custom)[cw,chh,ck].forEach(function(i){i.disabled=true});
+        st={x:0,y:0,z:0,r:0};render();
+        say('Ready. Drag, pinch or use the controls, then download.','প্রস্তুত। টেনে বা কন্ট্রোল দিয়ে বসান, তারপর ডাউনলোড করুন।');
       };
+      t.onerror=function(){say('Could not read that image file.','এই ইমেজ ফাইলটি পড়া যায়নি।','err')};
+      t.src=url;
+    }
+    drop.addEventListener('click',function(){file.click()});
+    drop.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();file.click()}});
+    file.addEventListener('change',function(e){if(e.target.files[0])load(e.target.files[0])});
+    ['dragenter','dragover'].forEach(function(n){stage.addEventListener(n,function(e){e.preventDefault();drop.classList.add('over')})});
+    ['dragleave','drop'].forEach(function(n){stage.addEventListener(n,function(e){e.preventDefault();drop.classList.remove('over')})});
+    stage.addEventListener('drop',function(e){var f=e.dataTransfer.files&&e.dataTransfer.files[0];if(f)load(f)});
 
-      const statusTranslations = {
-        'Drop or select a photo to begin.': { bn: 'শুরু করতে ফটো দিন বা বাছুন।' },
-        'Ready. Use the controls to position, zoom and rotate, then download.': { bn: 'প্রস্তুত। কন্ট্রোল দিয়ে বসান, জুম করুন ও ঘুরান, তারপর ডাউনলোড করুন।' },
-        'That file is not a supported image type.': { bn: 'এই ফাইলটি সহায়তা করা ইমেজ টাইপ নয়।' },
-        'Could not read that image file.': { bn: 'এই ইমেজ ফাইলটি পড়া যাচ্ছিল না।' },
-        'Drop or select an image to begin.': { bn: 'শুরু করতে ইমেজ দিন বা বাছুন।' },
-        'Reset to default position, zoom and rotation.': { bn: 'ডিফল্ট অবস্থান, জুম ও ঘোরানোতে ফিরে গেল।' },
-        'Downloaded — ': { bn: 'ডাউনলোড হয়েছে — ' },
-        'Something went wrong while processing this image. Please try again.': { bn: 'এই ইমেজ প্রক্রিয়াকরণের সময় কিছু সমস্যা হয়েছে। আবার চেষ্টা করুন।' }
-      };
+    S.posX.addEventListener('input',function(){st.x=clamp(S.posX.value/100,-1,1);render()});
+    S.posY.addEventListener('input',function(){st.y=clamp(S.posY.value/100,-1,1);render()});
+    S.zoom.addEventListener('input',function(){st.z=clamp(S.zoom.value/100,0,1);render()});
+    S.rotate.addEventListener('input',function(){st.r=clamp(+S.rotate.value,-180,180);render()});
+    $$('[data-nudge]',el).forEach(function(b){b.addEventListener('click',function(){
+      if(!natW)return;var p=b.dataset.nudge.split(':'),d=+p[1];
+      if(p[0]==='posX')st.x=clamp(st.x+d*.08,-1,1);
+      if(p[0]==='posY')st.y=clamp(st.y+d*.08,-1,1);
+      if(p[0]==='zoom')st.z=clamp(st.z+d*.08,0,1);
+      if(p[0]==='rotate')st.r=wrap(st.r+d*15);
+      render()})});
 
-      function applyLanguage(lang) {
-        const nextLang = lang === 'bn' ? 'bn' : 'en';
-        document.body.dataset.lang = nextLang;
-        langToggle.textContent = nextLang === 'bn' ? 'English' : 'বাংলা';
-        langToggle.setAttribute('aria-label', nextLang === 'bn' ? 'Switch to English' : 'বাংলা ভাষায় বদলান');
+    /* drag to pan, pinch to zoom */
+    var ptr={},pd=0,pz=0;
+    var dist=function(){var a=Object.keys(ptr).map(function(k){return ptr[k]});return a.length<2?0:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)};
+    frame.addEventListener('pointerdown',function(e){if(!natW)return;frame.setPointerCapture(e.pointerId);ptr[e.pointerId]={x:e.clientX,y:e.clientY};frame.classList.add('drag');if(Object.keys(ptr).length===2){pd=dist();pz=st.z}});
+    frame.addEventListener('pointermove',function(e){
+      if(!ptr[e.pointerId]||!natW)return;var pv=ptr[e.pointerId];ptr[e.pointerId]={x:e.clientX,y:e.clientY};
+      if(Object.keys(ptr).length>=2){if(pd>0){st.z=clamp(pz+(dist()-pd)/Math.max(pd,1)*.8,0,1);render()}return}
+      var g=geo();if(g.o.x>0)st.x=clamp(st.x+(e.clientX-pv.x)/g.o.x,-1,1);if(g.o.y>0)st.y=clamp(st.y+(e.clientY-pv.y)/g.o.y,-1,1);render()});
+    var end=function(e){delete ptr[e.pointerId];if(Object.keys(ptr).length<2)pd=0;if(!Object.keys(ptr).length)frame.classList.remove('drag')};
+    frame.addEventListener('pointerup',end);frame.addEventListener('pointercancel',end);
+    frame.addEventListener('wheel',function(e){if(!natW)return;e.preventDefault();st.z=clamp(st.z-e.deltaY*.0008,0,1);render()},{passive:false});
 
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-          const key = el.dataset.i18n;
-          if (translations[key]) {
-            el.textContent = nextLang === 'bn' ? translations[key].bn : translations[key].en;
-          }
-        });
+    rm.addEventListener('click',function(){
+      if(url)URL.revokeObjectURL(url);url=null;natW=natH=0;img.removeAttribute('src');
+      frame.classList.add('hidden');rmRow.classList.add('hidden');ctrls.classList.add('hidden');drop.classList.remove('hidden');
+      reset.disabled=dl.disabled=true;file.value='';
+      if(custom)[cw,chh,ck].forEach(function(i){i.disabled=false});
+      msg=IDLE[key];msgType='idle';paint();
+    });
+    reset.addEventListener('click',function(){if(natW){st={x:0,y:0,z:0,r:0};render();say('Reset to default position, zoom and rotation.','ডিফল্ট অবস্থান, জুম ও ঘোরানোতে ফিরে গেল।')}});
 
-        document.querySelectorAll('[data-i18n-html]').forEach(el => {
-          const key = el.dataset.i18nHtml;
-          if (translations[key]) {
-            el.innerHTML = nextLang === 'bn' ? translations[key].bn : translations[key].en;
-          }
-        });
-      }
+    function blob(q){return new Promise(function(r){cv.toBlob(r,'image/jpeg',q)})}
+    async function squeeze(){var q=.92,b=await blob(q);while(b&&b.size>maxB&&q>.1){q-=.07;b=await blob(q)}return b}
 
-      langToggle.addEventListener('click', () => {
-        applyLanguage(document.body.dataset.lang === 'bn' ? 'en' : 'bn');
-      });
-
-      applyLanguage('en');
-
-      tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
-          tab.classList.add('active'); tab.setAttribute('aria-selected', 'true');
-          tools.forEach(p => p.classList.remove('active'));
-          document.getElementById('tool-' + tab.dataset.target).classList.add('active');
-        });
-      });
-
-      function initTool(toolEl) {
-        const isCustom = toolEl.dataset.custom === '1';
-        let outW = parseFloat(toolEl.dataset.w) || 400;
-        let outH = parseFloat(toolEl.dataset.h) || 400;
-        let maxBytes = (parseFloat(toolEl.dataset.maxkb) || 200) * 1024;
-
-        const dropzone = toolEl.querySelector('[data-dropzone]');
-        const frame = toolEl.querySelector('[data-frame]');
-        const imgEl = toolEl.querySelector('[data-img]');
-        const fileInput = toolEl.querySelector('[data-fileinput]');
-        const removeRow = toolEl.querySelector('[data-removerow]');
-        const removeBtn = toolEl.querySelector('[data-remove]');
-        const controls = toolEl.querySelector('[data-controls]');
-        const resetBtn = toolEl.querySelector('[data-reset]');
-        const downloadBtn = toolEl.querySelector('[data-download]');
-        const statusEl = toolEl.querySelector('[data-status]');
-        const canvas = document.querySelector('[data-canvas]');
-
-        const sliders = {
-          posX: toolEl.querySelector('[data-slider="posX"]'),
-          posY: toolEl.querySelector('[data-slider="posY"]'),
-          zoom: toolEl.querySelector('[data-slider="zoom"]'),
-          rotate: toolEl.querySelector('[data-slider="rotate"]')
-        };
-        const nudgeBtns = toolEl.querySelectorAll('[data-nudge]');
-
-        // custom-only elements
-        let wInput, hInput, kbInput, dimHint, specDim, specRatio, specKb;
-        if (isCustom) {
-          wInput = toolEl.querySelector('#custom-w');
-          hInput = toolEl.querySelector('#custom-h');
-          kbInput = toolEl.querySelector('#custom-kb');
-          dimHint = toolEl.querySelector('[data-dimhint]');
-          specDim = toolEl.querySelector('[data-spec-dim]');
-          specRatio = toolEl.querySelector('[data-spec-ratio]');
-          specKb = toolEl.querySelector('[data-spec-kb]');
-        }
-
-        function simplifyRatio(w, h) {
-          const gcd = (a, b) => b ? gcd(b, a % b) : a;
-          const g = gcd(Math.round(w), Math.round(h)) || 1;
-          return `${Math.round(w / g)}:${Math.round(h / g)}`;
-        }
-
-        function applyFrameAspect() {
-          frame.style.aspectRatio = `${outW}/${outH}`;
-          dropzone.style.aspectRatio = `${outW}/${outH}`;
-        }
-
-        function syncCustomSpec() {
-          if (!isCustom) return;
-          specDim.textContent = `${outW} × ${outH} px`;
-          specRatio.textContent = simplifyRatio(outW, outH);
-          specKb.textContent = `${Math.round(maxBytes / 1024)} KB`;
-        }
-
-        if (isCustom) {
-          applyFrameAspect();
-          syncCustomSpec();
-          [wInput, hInput, kbInput].forEach(inp => {
-            inp.addEventListener('input', () => {
-              const w = clamp(parseInt(wInput.value) || 400, 10, 4000);
-              const h = clamp(parseInt(hInput.value) || 400, 10, 4000);
-              const kb = clamp(parseInt(kbInput.value) || 200, 5, 10000);
-              outW = w; outH = h; maxBytes = kb * 1024;
-              applyFrameAspect();
-              syncCustomSpec();
-            });
-          });
-        }
-
-        let natW = 0, natH = 0, objectUrl = null;
-        let state = { posXpct: 0, posYpct: 0, zoomPct: 0, rotateDeg: 0 };
-
-        function translateStatusMessage(msg) {
-          if (!msg || document.body.dataset.lang !== 'bn') return msg;
-          const exact = statusTranslations[msg];
-          if (exact) return exact.bn;
-          for (const [key, value] of Object.entries(statusTranslations)) {
-            if (msg.startsWith(key)) return value.bn + msg.slice(key.length);
-          }
-          return msg;
-        }
-
-        function setStatus(msg, type) {
-          statusEl.textContent = translateStatusMessage(msg);
-          statusEl.classList.remove('idle', 'err');
-          if (type) statusEl.classList.add(type);
-        }
-
-        function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
-
-        function frameSize() {
-          const rect = frame.getBoundingClientRect();
-          return { w: rect.width, h: rect.height };
-        }
-
-        function minScaleForRotation(rot, fw, fh) {
-          const rad = rot * Math.PI / 180;
-          const c = Math.abs(Math.cos(rad));
-          const s = Math.abs(Math.sin(rad));
-          const boundW = natW * c + natH * s;
-          const boundH = natW * s + natH * c;
-          return Math.max(fw / boundW, fh / boundH);
-        }
-
-        function maxOffsets(rot, scale, fw, fh) {
-          const rad = rot * Math.PI / 180;
-          const c = Math.abs(Math.cos(rad));
-          const s = Math.abs(Math.sin(rad));
-          const halfW = (natW * c + natH * s) * scale / 2;
-          const halfH = (natW * s + natH * c) * scale / 2;
-          return {
-            x: Math.max(0, halfW - fw / 2),
-            y: Math.max(0, halfH - fh / 2)
-          };
-        }
-
-        function render() {
-          if (!natW) return;
-          const { w: fw, h: fh } = frameSize();
-          const rot = state.rotateDeg;
-          const minScale = minScaleForRotation(rot, fw, fh);
-          const scale = minScale * (1 + state.zoomPct * 2);
-          const off = maxOffsets(rot, scale, fw, fh);
-          const panX = state.posXpct * off.x;
-          const panY = state.posYpct * off.y;
-
-          imgEl.style.transform =
-            `translate(${fw / 2 + panX}px, ${fh / 2 + panY}px) rotate(${rot}deg) scale(${scale}) translate(${-natW / 2}px, ${-natH / 2}px)`;
-
-          sliders.posX.value = state.posXpct * 100;
-          sliders.posY.value = state.posYpct * 100;
-          sliders.zoom.value = state.zoomPct * 100;
-          sliders.rotate.value = rot;
-        }
-
-        function resetState() {
-          state = { posXpct: 0, posYpct: 0, zoomPct: 0, rotateDeg: 0 };
-          render();
-        }
-
-        function loadFile(file) {
-          if (!file || !file.type.startsWith('image/')) {
-            setStatus('That file is not a supported image type.', 'err');
-            return;
-          }
-          if (objectUrl) URL.revokeObjectURL(objectUrl);
-          objectUrl = URL.createObjectURL(file);
-          const testImg = new Image();
-          testImg.onload = () => {
-            natW = testImg.naturalWidth;
-            natH = testImg.naturalHeight;
-            imgEl.src = objectUrl;
-            dropzone.classList.add('hidden');
-            frame.classList.remove('hidden');
-            removeRow.classList.remove('hidden');
-            controls.classList.remove('hidden');
-            resetBtn.disabled = false;
-            downloadBtn.disabled = false;
-            Object.values(sliders).forEach(s => s.disabled = false);
-            if (isCustom) {
-              [wInput, hInput, kbInput].forEach(i => i.disabled = true);
-              dimHint.textContent = 'Dimensions locked. Tap Remove to change them.';
-            }
-            resetState();
-            setStatus('Ready. Use the controls to position, zoom and rotate, then download.');
-          };
-          testImg.onerror = () => {
-            setStatus('Could not read that image file.', 'err');
-          };
-          testImg.src = objectUrl;
-        }
-
-        dropzone.addEventListener('click', () => fileInput.click());
-        dropzone.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
-        });
-        fileInput.addEventListener('change', (e) => {
-          if (e.target.files && e.target.files[0]) loadFile(e.target.files[0]);
-        });
-
-        ['dragenter', 'dragover'].forEach(evt => {
-          dropzone.addEventListener(evt, (e) => {
-            e.preventDefault(); e.stopPropagation();
-            dropzone.classList.add('drag-over');
-          });
-        });
-        ['dragleave', 'drop'].forEach(evt => {
-          dropzone.addEventListener(evt, (e) => {
-            e.preventDefault(); e.stopPropagation();
-            dropzone.classList.remove('drag-over');
-          });
-        });
-        dropzone.addEventListener('drop', (e) => {
-          const file = e.dataTransfer.files && e.dataTransfer.files[0];
-          if (file) loadFile(file);
-        });
-
-        const stage = toolEl.querySelector('[data-stage]');
-        ['dragenter', 'dragover'].forEach(evt => stage.addEventListener(evt, (e) => { e.preventDefault(); }));
-        stage.addEventListener('drop', (e) => {
-          e.preventDefault();
-          const file = e.dataTransfer.files && e.dataTransfer.files[0];
-          if (file) loadFile(file);
-        });
-
-        sliders.posX.addEventListener('input', () => { state.posXpct = clamp(parseFloat(sliders.posX.value) / 100, -1, 1); render(); });
-        sliders.posY.addEventListener('input', () => { state.posYpct = clamp(parseFloat(sliders.posY.value) / 100, -1, 1); render(); });
-        sliders.zoom.addEventListener('input', () => { state.zoomPct = clamp(parseFloat(sliders.zoom.value) / 100, 0, 1); render(); });
-        sliders.rotate.addEventListener('input', () => { state.rotateDeg = clamp(parseFloat(sliders.rotate.value), -45, 45); render(); });
-
-        nudgeBtns.forEach(btn => {
-          btn.addEventListener('click', () => {
-            if (!natW) return;
-            const [key, dir] = btn.dataset.nudge.split(':');
-            const d = parseFloat(dir);
-            if (key === 'posX') state.posXpct = clamp(state.posXpct + d * 0.08, -1, 1);
-            if (key === 'posY') state.posYpct = clamp(state.posYpct + d * 0.08, -1, 1);
-            if (key === 'zoom') state.zoomPct = clamp(state.zoomPct + d * 0.08, 0, 1);
-            if (key === 'rotate') state.rotateDeg = clamp(state.rotateDeg + d * 5, -45, 45);
-            render();
-          });
-        });
-
-        removeBtn.addEventListener('click', () => {
-          if (objectUrl) URL.revokeObjectURL(objectUrl);
-          objectUrl = null;
-          natW = 0; natH = 0;
-          imgEl.src = '';
-          frame.classList.add('hidden');
-          removeRow.classList.add('hidden');
-          controls.classList.add('hidden');
-          dropzone.classList.remove('hidden');
-          resetBtn.disabled = true;
-          downloadBtn.disabled = true;
-          Object.values(sliders).forEach(s => s.disabled = true);
-          fileInput.value = '';
-          if (isCustom) {
-            [wInput, hInput, kbInput].forEach(i => i.disabled = false);
-            dimHint.textContent = 'Set the size you need, then add your image. Dimensions lock once an image is loaded — remove it to change them.';
-          }
-          setStatus('Drop or select an image to begin.', null);
-          statusEl.classList.add('idle');
-        });
-
-        resetBtn.addEventListener('click', () => {
-          if (natW) { resetState(); setStatus('Reset to default position, zoom and rotation.'); }
-        });
-
-        function blobFromCanvas(cv, quality) {
-          return new Promise(resolve => {
-            cv.toBlob(blob => resolve(blob), 'image/jpeg', quality);
-          });
-        }
-
-        async function compressToTarget(cv) {
-          let quality = 0.92;
-          let blob = await blobFromCanvas(cv, quality);
-          while (blob && blob.size > maxBytes && quality > 0.1) {
-            quality -= 0.07;
-            blob = await blobFromCanvas(cv, quality);
-          }
-          return blob;
-        }
-
-        downloadBtn.addEventListener('click', async () => {
-          if (!natW) { return; }
-          downloadBtn.disabled = true;
-          const prevLabel = downloadBtn.textContent;
-          downloadBtn.textContent = 'Processing…';
-          try {
-            const { w: fw, h: fh } = frameSize();
-            const k = outW / fw;
-            const rot = state.rotateDeg;
-            const minScale = minScaleForRotation(rot, fw, fh);
-            const scale = minScale * (1 + state.zoomPct * 2);
-            const off = maxOffsets(rot, scale, fw, fh);
-            const panX = state.posXpct * off.x;
-            const panY = state.posYpct * off.y;
-
-            canvas.width = outW;
-            canvas.height = outH;
-            const ctx = canvas.getContext('2d');
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-            ctx.clearRect(0, 0, outW, outH);
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, outW, outH);
-
-            ctx.translate(outW / 2 + panX * k, outH / 2 + panY * k);
-            ctx.rotate(rot * Math.PI / 180);
-            ctx.scale(scale * k, scale * k);
-            ctx.drawImage(imgEl, -natW / 2, -natH / 2);
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-            const blob = await compressToTarget(canvas);
-            if (!blob) { throw new Error('encode-failed'); }
-
-            const kb = (blob.size / 1024).toFixed(1);
-            const withinLimit = blob.size <= maxBytes;
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${outW}x${outH}.jpg`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            setTimeout(() => URL.revokeObjectURL(url), 4000);
-
-            setStatus(
-              withinLimit
-                ? `Downloaded — ${outW}×${outH}px, ${kb}KB, JPG.`
-                : `Downloaded — ${outW}×${outH}px, ${kb}KB. Could not fully compress under the limit; try a simpler image.`,
-              withinLimit ? null : 'err'
-            );
-          } catch (err) {
-            setStatus('Something went wrong while processing this image. Please try again.', 'err');
-          } finally {
-            downloadBtn.disabled = false;
-            downloadBtn.textContent = prevLabel;
-          }
-        });
-
-        window.addEventListener('resize', () => { render(); });
-      }
-
-      document.querySelectorAll('.tool').forEach(initTool);
-    })();
-  </script>
+    dl.addEventListener('click',async function(){
+      if(!natW)return;dl.disabled=true;var label=dl.innerHTML;dl.textContent=lang==='bn'?'প্রক্রিয়া চলছে…':'Processing…';
+      try{
+        var g=geo(),k=outW/g.f.w;
+        cv.width=outW;cv.height=outH;var c=cv.getContext('2d');
+        c.setTransform(1,0,0,1,0,0);c.fillStyle='#fff';c.fillRect(0,0,outW,outH);
+        c.translate(outW/2+g.px*k,outH/2+g.py*k);c.rotate(st.r*Math.PI/180);c.scale(g.sc*k,g.sc*k);
+        c.drawImage(img,-natW/2,-natH/2);c.setTransform(1,0,0,1,0,0);
+        var b=await squeeze();if(!b)throw 0;
+        var kb=(b.size/1024).toFixed(1),ok=b.size<=maxB,u=URL.createObjectURL(b),a=document.createElement('a');
+        a.href=u;a.download='mhosfit-'+outW+'x'+outH+'.jpg';document.body.appendChild(a);a.click();a.remove();
+        setTimeout(function(){URL.revokeObjectURL(u)},4000);
+        say(ok?'Downloaded — '+outW+'×'+outH+'px, '+kb+'KB, JPG.':'Downloaded — '+outW+'×'+outH+'px, '+kb+'KB. Could not fully compress under the limit; try a simpler image.',
+            ok?'ডাউনলোড হয়েছে — '+outW+'×'+outH+'px, '+kb+'KB, JPG।':'ডাউনলোড হয়েছে — '+outW+'×'+outH+'px, '+kb+'KB। সীমার নিচে আনা যায়নি; সহজ ছবি চেষ্টা করুন।',ok?'':'err');
+      }catch(e){say('Something went wrong while processing this image. Please try again.','ইমেজ প্রক্রিয়াকরণে সমস্যা হয়েছে। আবার চেষ্টা করুন।','err')}
+      finally{dl.disabled=false;dl.innerHTML=label}
+    });
+    window.addEventListener('resize',render);
+    window.addEventListener('orientationchange',function(){setTimeout(render,250)});
+  }
+  /* language: saved choice > Bangladesh signals (time zone / language) > English */
+  function detect(){
+    try{var sv=localStorage.getItem('mhosfit-lang');if(sv==='bn'||sv==='en')return sv}catch(e){}
+    var tz='',nl='';
+    try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}
+    nl=(navigator.languages&&navigator.languages[0])||navigator.language||'';
+    return (/^Asia\/(Dhaka|Dacca)$/.test(tz)||/^bn/i.test(nl)||/-BD$/i.test(nl))?'bn':'en';
+  }
+  tools.forEach(init);
+  applyLang(detect());
+})();
+</script>
 </body>
-
 </html>
