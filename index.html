@@ -48,7 +48,9 @@ a{color:var(--forest)}
 
 header{padding:12px 0 0}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.brand img{display:block;height:38px;width:auto;max-width:46vw;object-fit:contain}
+.brand{display:inline-flex;align-items:center;text-decoration:none;min-height:44px}
+.brand img{display:block;height:44px;width:auto;max-width:62vw;object-fit:contain;object-position:left center}
+.wm{font:700 26px/1 "Space Grotesk",Inter,sans-serif;letter-spacing:-.03em;color:var(--forest)}.wm b{color:var(--brick)}
 .acts{display:flex;gap:8px}
 .pill{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:6px 14px;border-radius:999px;border:1px solid var(--sand);background:var(--raised);color:var(--ink);font-size:13.5px;font-weight:600;text-decoration:none;cursor:pointer}
 .pill svg{width:13px;height:13px;fill:currentColor}
@@ -156,7 +158,7 @@ footer p{margin:0 0 6px}
 
 @media(min-width:761px){
   .wrap{padding:0 28px}
-  .brand img{height:46px}
+  .brand img{height:54px}
   .menu{flex-wrap:wrap;overflow:visible;margin:26px 0 20px;padding:0}
   .grid{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:start;padding-bottom:44px;gap:20px}
   .panel{padding:22px}
@@ -218,7 +220,7 @@ body[data-l=bn] .tab b,body[data-l=bn] .btn{letter-spacing:0}
 <div class="wrap">
 <header>
   <div class="bar">
-    <a class="brand" href="./" aria-label="mhosFIT home" data-bna="mhosFIT হোম"><img src="assets/logo.png" alt="mhosFIT logo" width="251" height="60"></a>
+    <a class="brand" href="./" aria-label="mhosFIT home" data-bna="mhosFIT হোম"><img id="logo" src="assets/logo.png" alt="mhosFIT logo" width="251" height="60" decoding="async"></a>
   </div>
 </header>
 <main>
@@ -257,7 +259,7 @@ body[data-l=bn] .tab b,body[data-l=bn] .btn{letter-spacing:0}
     <p>© <span id="yr"></span> mhosFIT · <span data-bn="ডেভেলপার:">Developed by</span> <a href="https://www.facebook.com/themhosbd/" target="_blank" rel="noopener noreferrer">mhos</a></p>
   </div>
   <div class="vcs">
-      <p class="vc" id="vcwrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span data-bn="মোট ভিজিটর">Total visitors</span>: <b id="vc">…</b></p>
+      <p class="vc" id="vcwrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span data-bn="সর্বমোট ভিজিটর">Lifetime visitors</span>: <b id="vc">…</b></p>
       <p class="vc hidden" id="dcwrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/></svg><span data-bn="মোট ডাউনলোড">Total downloads</span>: <b id="dc">…</b></p>
   </div>
 </footer>
@@ -618,9 +620,9 @@ body[data-l=bn] .tab b,body[data-l=bn] .btn{letter-spacing:0}
   });
 
   /* visitor + download counters (abacus.jasoncameron.dev, no key needed) */
-  var CB='https://abacus.jasoncameron.dev/',NS='mhosfit-github-io',CN={vc:null,dc:null};
+  var CB='https://abacus.jasoncameron.dev/',NS='mhosfit-github-io',CN={vc:null,dc:null},BASE={vc:0,dc:0}; /* BASE = starting number added on top (e.g. set BASE.vc=1500 to continue an old count) */
   function cget(name,inc){return fetch(CB+(inc?'hit/':'get/')+NS+'/'+name).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){if(typeof j.value!=='number')throw 0;return j.value})}
-  function cpaint(id){var el=$('#'+id);if(CN[id]!==null){el.textContent=CN[id].toLocaleString(lang==='bn'?'bn-BD':'en-US');$('#'+id+'wrap').classList.remove('hidden')}}
+  function cpaint(id){var el=$('#'+id);if(CN[id]!==null){el.textContent=(CN[id]+BASE[id]).toLocaleString(lang==='bn'?'bn-BD':'en-US');$('#'+id+'wrap').classList.remove('hidden')}}
   document.addEventListener('langchange',function(){cpaint('vc');cpaint('dc')});
   (function(){
     var seen=false;
@@ -630,6 +632,14 @@ body[data-l=bn] .tab b,body[data-l=bn] .btn{letter-spacing:0}
     cget('downloads',false).then(function(n){CN.dc=n;cpaint('dc')}).catch(function(){});
   })();
   function countDownload(){cget('downloads',true).then(function(n){CN.dc=n;cpaint('dc')}).catch(function(){})}
+
+  /* logo: if the image file is missing/blocked, show a text logo instead of a broken icon */
+  (function(){
+    var lg=$('#logo');if(!lg)return;
+    function fallback(){var w=document.createElement('span');w.className='wm';w.innerHTML='mhos<b>FIT</b>';lg.replaceWith(w)}
+    lg.addEventListener('error',fallback);
+    if(lg.complete&&lg.naturalWidth===0)fallback();
+  })();
 
   tools.forEach(init);
   applyLang(detect());
