@@ -16,9 +16,7 @@
     <meta name="author" content="mhosFIT" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <link rel="canonical" href="https://mhosfit.github.io/" />
-    <link rel="alternate" hreflang="en" href="https://mhosfit.github.io/" />
-    <link rel="alternate" hreflang="bn" href="https://mhosfit.github.io/" />
-    <link rel="alternate" hreflang="x-default" href="https://mhosfit.github.io/" />
+
     <link rel="icon" type="image/png" href="assets/favicon.png" />
     <link rel="apple-touch-icon" href="assets/favicon.png" />
     <meta property="og:type" content="website" />
@@ -39,7 +37,7 @@
       content="Passport size, stamp size, 300×300 photo and signature resizer. Free, private, mobile friendly."
     />
     <meta name="twitter:image" content="https://mhosfit.github.io/assets/og.png" />
-    <!-- <meta name="google-site-verification" content="PASTE_CODE_HERE"> -->
+    <meta name="google-site-verification" content="D-YzIhDto2pq4VEEf29sk4aY9ATtSbiPk0ymmbSD8VI" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -51,12 +49,24 @@
         "@context": "https://schema.org",
         "@graph": [
           {
+            "@type": "Organization",
+            "@id": "https://mhosfit.github.io/#org",
+            "name": "mhosFIT",
+            "alternateName": ["mhos fit", "mhosfit"],
+            "url": "https://mhosfit.github.io/",
+            "logo": "https://mhosfit.github.io/assets/logo.png",
+            "sameAs": ["https://www.facebook.com/themhosbd/"]
+          },
+          {
             "@type": "WebSite",
             "@id": "https://mhosfit.github.io/#site",
             "name": "mhosFIT",
             "alternateName": ["mhos fit", "mhosfit"],
             "url": "https://mhosfit.github.io/",
-            "inLanguage": ["en", "bn"]
+            "inLanguage": ["en", "bn"],
+            "publisher": {
+              "@id": "https://mhosfit.github.io/#org"
+            }
           },
           {
             "@type": "WebApplication",
@@ -66,9 +76,18 @@
             "operatingSystem": "Any (browser-based)",
             "browserRequirements": "Requires JavaScript",
             "description": "Free online passport size photo, stamp size photo and signature resizer and compressor.",
-            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
             "inLanguage": ["en", "bn"],
-            "isPartOf": { "@id": "https://mhosfit.github.io/#site" }
+            "isPartOf": {
+              "@id": "https://mhosfit.github.io/#site"
+            },
+            "publisher": {
+              "@id": "https://mhosfit.github.io/#org"
+            }
           },
           {
             "@type": "FAQPage",
@@ -102,7 +121,7 @@
                 "name": "How do I make a photo 300x300 pixels under 100KB?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Open the Photo tab, add your picture, position and zoom it inside the square frame, then tap Download. mhosFIT outputs a 300x300 JPG and compresses it automatically to stay under 100KB."
+                  "text": "Open the Photo tab, add your picture, position and zoom it inside the square frame, then tap Download. mhosFIT outputs a 300x300 JPG and keeps the file between 10KB and 100KB automatically."
                 }
               },
               {
@@ -110,7 +129,7 @@
                 "name": "How do I make a signature 300x80 pixels under 60KB?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Open the Signature tab, add a photo of your signature on white paper, fit it in the frame and tap Download. The result is a 300x80 JPG under 60KB."
+                  "text": "Open the Signature tab, add a photo of your signature on white paper, fit it in the frame and tap Download. The result is a 300x80 JPG between 10KB and 60KB."
                 }
               },
               {
@@ -118,7 +137,7 @@
                 "name": "My form asks for a different size or KB limit. What should I do?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Use the Custom tab. Enter any width, height and maximum file size, then crop, rotate a full 360 degrees and download."
+                  "text": "Use the Custom tab. Enter any width, height, minimum and maximum file size, then crop, rotate a full 360 degrees and download."
                 }
               },
               {
@@ -1326,8 +1345,11 @@
               Choose <strong>Photo</strong>, <strong>Passport size</strong>,
               <strong>Stamp size</strong>, <strong>Signature</strong> or <strong>Custom</strong>.
             </li>
-            <li data-bn="ফোন বা কম্পিউটার থেকে ইমেজ বাছুন, অথবা টেনে আনুন।">
-              Select an image from your phone or computer, or drag it in.
+            <li
+              data-bn="ফোন বা কম্পিউটার থেকে ইমেজ বাছুন, টেনে আনুন, অথবা ফোনের ক্যামেরায় ছবি তুলুন।"
+            >
+              Select an image from your phone or computer, drag it in, or take a photo with your
+              phone camera.
             </li>
             <li
               data-bn="টেনে, পিঞ্চ করে জুম করে বা স্লাইডার দিয়ে সরান, জুম ও ৩৬০° ঘুরান — ফ্রেমে ঠিকমতো না বসা পর্যন্ত।"
@@ -1393,11 +1415,11 @@
               How do I make a photo 300x300 pixels under 100KB?
             </summary>
             <p
-              data-bn="ফটো ট্যাব খুলে ছবি দিন, চৌকো ফ্রেমের ভেতরে বসান ও জুম করুন, তারপর ডাউনলোড চাপুন। mhosFIT ৩০০×৩০০ JPG বানায় এবং ১০০KB-এর নিচে রাখতে নিজে কমপ্রেস করে।"
+              data-bn="ফটো ট্যাব খুলে ছবি দিন, চৌকো ফ্রেমের ভেতরে বসান ও জুম করুন, তারপর ডাউনলোড চাপুন। mhosFIT ৩০০×৩০০ JPG বানায় এবং ফাইল সাইজ নিজে থেকেই ১০KB থেকে ১০০KB-এর মধ্যে রাখে।"
             >
               Open the Photo tab, add your picture, position and zoom it inside the square frame,
-              then tap Download. mhosFIT outputs a 300x300 JPG and compresses it automatically to
-              stay under 100KB.
+              then tap Download. mhosFIT outputs a 300x300 JPG and keeps the file between 10KB and
+              100KB automatically.
             </p>
           </details>
           <details>
@@ -1405,10 +1427,10 @@
               How do I make a signature 300x80 pixels under 60KB?
             </summary>
             <p
-              data-bn="স্বাক্ষর ট্যাব খুলে সাদা কাগজে স্বাক্ষরের ছবি দিন, ফ্রেমে বসিয়ে ডাউনলোড চাপুন। ফলাফল হবে ৬০KB-এর নিচের ৩০০×৮০ JPG।"
+              data-bn="স্বাক্ষর ট্যাব খুলে সাদা কাগজে স্বাক্ষরের ছবি দিন, ফ্রেমে বসিয়ে ডাউনলোড চাপুন। ফলাফল হবে ১০KB থেকে ৬০KB-এর মধ্যে ৩০০×৮০ JPG।"
             >
               Open the Signature tab, add a photo of your signature on white paper, fit it in the
-              frame and tap Download. The result is a 300x80 JPG under 60KB.
+              frame and tap Download. The result is a 300x80 JPG between 10KB and 60KB.
             </p>
           </details>
           <details>
@@ -1416,10 +1438,10 @@
               My form asks for a different size or KB limit. What should I do?
             </summary>
             <p
-              data-bn="কাস্টম ট্যাব ব্যবহার করুন। যেকোনো প্রস্থ, উচ্চতা ও সর্বোচ্চ ফাইল সাইজ লিখে ক্রপ করুন, পুরো ৩৬০° ঘুরান ও ডাউনলোড করুন।"
+              data-bn="কাস্টম ট্যাব ব্যবহার করুন। যেকোনো প্রস্থ, উচ্চতা, সর্বনিম্ন ও সর্বোচ্চ ফাইল সাইজ লিখে ক্রপ করুন, পুরো ৩৬০° ঘুরান ও ডাউনলোড করুন।"
             >
-              Use the Custom tab. Enter any width, height and maximum file size, then crop, rotate a
-              full 360 degrees and download.
+              Use the Custom tab. Enter any width, height, minimum and maximum file size, then crop,
+              rotate a full 360 degrees and download.
             </p>
           </details>
           <details>
